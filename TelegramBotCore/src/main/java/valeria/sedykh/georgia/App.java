@@ -1,5 +1,8 @@
 package valeria.sedykh.georgia;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
