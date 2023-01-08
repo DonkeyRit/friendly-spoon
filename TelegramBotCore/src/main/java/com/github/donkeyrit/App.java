@@ -1,7 +1,9 @@
 package com.github.donkeyrit;
 
-import com.github.donkeyrit.TelegramPoolingBot;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.donkeyrit.configurations.ConfigurationManager;
+import com.github.donkeyrit.http.executor.HttpClientExecutor;
+import com.github.donkeyrit.http.executor.HttpClientJsonExecutor;
 import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
 
 public class App 
@@ -10,7 +12,9 @@ public class App
   {
 
     TelegramBotConfigurationSettings configurationSettings = ConfigurationManager.GetTelegramBotConfiguration();
-    TelegramPoolingBot telegramPoolingBot = new TelegramPoolingBot(configurationSettings);
+    HttpClientExecutor httpClientExecutor = new HttpClientJsonExecutor();
+    ObjectMapper jsonObjectMapper = new ObjectMapper();
+    TelegramPoolingBot telegramPoolingBot = new TelegramPoolingBot(configurationSettings, httpClientExecutor, jsonObjectMapper);
     telegramPoolingBot.GetMe();
   }
 }
