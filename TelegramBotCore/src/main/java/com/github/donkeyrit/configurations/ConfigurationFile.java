@@ -1,4 +1,4 @@
-package main.java.valeria.sedykh.georgia.configurations;
+package com.github.donkeyrit.configurations;
 
 public enum ConfigurationFile 
 {

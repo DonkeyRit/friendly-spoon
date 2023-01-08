@@ -1,8 +1,8 @@
-package valeria.sedykh.georgia;
+package com.github.donkeyrit;
 
-import main.java.valeria.sedykh.georgia.TelegramPoolingBot;
-import main.java.valeria.sedykh.georgia.configurations.ConfigurationManager;
-import main.java.valeria.sedykh.georgia.settings.TelegramBotConfigurationSettings;
+import com.github.donkeyrit.TelegramPoolingBot;
+import com.github.donkeyrit.configurations.ConfigurationManager;
+import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
 
 public class App 
 {

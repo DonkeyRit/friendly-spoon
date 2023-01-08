@@ -8,14 +8,14 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "valeria.sedykh.georgia.App",
+            "mainClass": "com.github.donkeyrit.App",
             "projectName": ""
         },
         {
             "type": "java",
             "name": "Launch Current File",
             "request": "launch",
-            "mainClass": "${file}",
+            "mainClass": "${file}"
         }
     ]
 }

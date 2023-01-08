@@ -1,12 +1,12 @@
-package main.java.valeria.sedykh.georgia;
+package com.github.donkeyrit;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import main.java.valeria.sedykh.georgia.settings.TelegramBotConfigurationSettings;
-import main.java.valeria.sedykh.georgia.settings.TelegramBotSettings;
+import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
+import com.github.donkeyrit.settings.TelegramBotSettings;
 
 public class TelegramPoolingBot 
 {

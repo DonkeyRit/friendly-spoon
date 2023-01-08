@@ -1,11 +1,11 @@
-package main.java.valeria.sedykh.georgia.configurations;
+package com.github.donkeyrit.configurations;
 
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import main.java.valeria.sedykh.georgia.settings.TelegramBotConfigurationSettings;
+import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
 
 public final class ConfigurationManager 
 {

@@ -1,4 +1,4 @@
-package main.java.valeria.sedykh.georgia.settings;
+package com.github.donkeyrit.settings;
 
 public record TelegramBotSettings(
     long id,
