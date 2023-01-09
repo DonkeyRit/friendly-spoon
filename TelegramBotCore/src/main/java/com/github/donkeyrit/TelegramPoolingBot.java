@@ -3,7 +3,8 @@ package com.github.donkeyrit;
 import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
 import com.github.donkeyrit.settings.TelegramBotSettings;
 import com.github.donkeyrit.http.executor.HttpClientExecutor;
-import com.github.donkeyrit.http.query.TelegramApiQueryBuilder;
+
+import java.net.URI;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,12 +25,9 @@ public class TelegramPoolingBot
     }
     
     public TelegramBotSettings GetMe() throws Exception
-    {		
-		TelegramApiQueryBuilder queryBuilder = new TelegramApiQueryBuilder(
-			"https://api.telegram.org/bot%s/getMe", 
-			this.configurationSettings.botApiKey());
-		
-		Object responseJson = httpClientExecutor.Get(queryBuilder.BuildQuery());
-		return jsonObjectMapper.readValue(responseJson.toString(), TelegramBotSettings.class);
+    {
+		String urlStr = String.format("https://api.telegram.org/bot%s/getMe", this.configurationSettings.botApiKey());
+		String responseJson = httpClientExecutor.Get(new URI(urlStr));
+		return jsonObjectMapper.readValue(responseJson, TelegramBotSettings.class);
     }
 }

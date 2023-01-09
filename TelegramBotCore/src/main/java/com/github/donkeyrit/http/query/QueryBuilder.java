@@ -1,6 +1,9 @@
 package com.github.donkeyrit.http.query;
 
+import java.net.URI;
+
 public interface QueryBuilder 
 {
-    String BuildQuery();   
+    QueryBuilder SetBaseUrl(String url);
+    URI BuildQuery();   
 }
