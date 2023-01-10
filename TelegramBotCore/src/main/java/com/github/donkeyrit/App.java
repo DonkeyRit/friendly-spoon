@@ -11,14 +11,14 @@ public class App {
   public static void main(String[] args) throws Exception {
 
     TelegramBotConfigurationSettings configurationSettings = ConfigurationManager.GetTelegramBotConfiguration();
-    HttpClientExecutor httpClientExecutor = new HttpClientJsonExecutor();
     ObjectMapper jsonObjectMapper = new ObjectMapper();
+    HttpClientExecutor httpClientExecutor = new HttpClientJsonExecutor(jsonObjectMapper);
     TelegramPoolingBot telegramPoolingBot = new TelegramPoolingBot(
         configurationSettings,
         httpClientExecutor,
         jsonObjectMapper);
 
     TelegramBotSettings settings = telegramPoolingBot.GetMe();
-    
+    telegramPoolingBot.GetUpdates();
   }
 }

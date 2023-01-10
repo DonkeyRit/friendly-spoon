@@ -30,4 +30,10 @@ public class TelegramPoolingBot
 		String responseJson = httpClientExecutor.Get(new URI(urlStr));
 		return jsonObjectMapper.readValue(responseJson, TelegramBotSettings.class);
     }
+
+	public void GetUpdates() throws Exception
+	{
+		String urlStr = String.format("https://api.telegram.org/bot%s/getUpdates", this.configurationSettings.botApiKey());
+		String responseJson = httpClientExecutor.Post(new URI(urlStr), "{}");
+	}
 }

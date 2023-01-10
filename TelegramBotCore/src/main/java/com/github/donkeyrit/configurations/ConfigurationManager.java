@@ -25,7 +25,7 @@ public final class ConfigurationManager
     }
 
 
-    private static Properties GetProperties(String configFilePath) throws IOException
+    public static Properties GetProperties(String configFilePath) throws IOException
     {
         FileInputStream propsInput = new FileInputStream(configFilePath);
         Properties prop = new Properties();
