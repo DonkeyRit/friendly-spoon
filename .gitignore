@@ -21,3 +21,9 @@ target/
 
 ### Project config files ###
 config.properties
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
