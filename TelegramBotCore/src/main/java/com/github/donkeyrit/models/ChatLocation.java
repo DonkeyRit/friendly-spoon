@@ -1,0 +1,19 @@
+package com.github.donkeyrit.models;
+
+/**
+ * Represents a location to which a chat is connected.
+ */
+public record ChatLocation(
+    /**
+     * The location to which the supergroup is connected. 
+     * Can't be a live location.
+     */
+    Location location,
+    /**
+     * Location address; 1-64 characters, as defined by the chat owner
+     */
+    String address
+) 
+{
+    
+}
