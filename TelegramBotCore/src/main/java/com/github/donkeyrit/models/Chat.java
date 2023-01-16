@@ -19,7 +19,8 @@ public record Chat(
     /**
      * Type of chat, can be either “private”, “group”, “supergroup” or “channel”
      */
-    ChatType type, //How to parse JSON
+    // TODO: Implement supporting parsing enum
+    ChatType type,
     /**
      * Title, for supergroups, channels and group chats
      */
