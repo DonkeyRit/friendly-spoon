@@ -2,6 +2,7 @@ package com.github.donkeyrit.models;
 
 /**
  * Represents a location to which a chat is connected.
+ * @see <a href="https://core.telegram.org/bots/api#chatlocation">Telegram API ChatLocation</a>
  */
 public record ChatLocation(
     /**

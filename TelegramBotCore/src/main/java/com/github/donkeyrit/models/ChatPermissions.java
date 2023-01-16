@@ -4,6 +4,7 @@ import java.util.Optional;
 
 /**
  * Describes actions that a non-administrator user is allowed to take in a chat.
+ * @see <a href="https://core.telegram.org/bots/api#chatpermissions">Telegram API ChatPermissions</a>
  */
 public record ChatPermissions(
     /**

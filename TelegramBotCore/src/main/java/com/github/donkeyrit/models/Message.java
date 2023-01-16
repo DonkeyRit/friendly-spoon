@@ -3,7 +3,8 @@ package com.github.donkeyrit.models;
 import java.util.Optional;
 
 /**
- * 
+ * This object represents a message.
+ * @see <a href="https://core.telegram.org/bots/api#message">Telegram API Message</a>
  */
 public record Message(
     /**

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 /**
  * This object represents a Telegram user or bot.
+ * @see <a href="https://core.telegram.org/bots/api#user">Telegram API User</a>
  */
 public record User (
     /**

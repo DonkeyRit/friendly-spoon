@@ -1,5 +1,9 @@
 package com.github.donkeyrit.models;
 
+/**
+ * This object represents a chat photo.
+ * @see <a href="https://core.telegram.org/bots/api#chatphoto">Telegram API ChatPhoto</a>
+ */
 public record ChatPhoto(
     /**
      * File identifier of small (160x160) chat photo. 

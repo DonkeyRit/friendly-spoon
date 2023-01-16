@@ -5,6 +5,7 @@ import java.util.Optional;
 
 /**
  * This object represents a chat.
+ * @see <a href="https://core.telegram.org/bots/api#chat">Telegram API Chat</a>
  */
 public record Chat(
     /**

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 /**
  * This object represents a point on the map.
+ * @see <a href="https://core.telegram.org/bots/api#location">Telegram API Location</a>
  */
 public record Location(
     /**
