@@ -135,7 +135,113 @@ public record Message(
     /**
      * Message is a video note, information about the video message
      */
-    Optional<VideoNote> videoNote
+    Optional<VideoNote> videoNote,
+    /**
+     * Message is a voice message, information about the file
+     */
+    Optional<Voice> voice,
+    /**
+     * Caption for the animation, audio, document, photo, video or voice
+     */
+    Optional<String> caption,
+    /**
+     * For messages with a caption, special entities like usernames, URLs, bot commands, etc. 
+     * that appear in the caption
+     */
+    Optional<MessageEntity[]> captionEntities,
+    /**
+     * True, if the message media is covered by a spoiler animation
+     */
+    Optional<Boolean> hasMediaSpoiler,
+    /**
+     * Message is a shared contact, information about the contact
+     */
+    Optional<Contact> contact,
+    /**
+     * Message is a dice with random value
+     */
+    Optional<Dice> dice,
+    /**
+     * Message is a game, information about the game. More about games »
+     */
+    Optional<Game> game,
+    /**
+     * Message is a native poll, information about the poll
+     */
+    Optional<Poll> poll,
+    /**
+     * Message is a venue, information about the venue. 
+     * For backward compatibility, when this field is set, the location field will also be set
+     */
+    Optional<Venue> venue,
+    /**
+     * Message is a shared location, information about the location
+     */
+    Optional<Location> location,
+    /**
+     * New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
+     */
+    Optional<User[]> newChatMembers,
+    /**
+     * A member was removed from the group, information about them (this member may be the bot itself)
+     */
+    Optional<User> leftChatMember,
+    /**
+     * A chat title was changed to this value
+     */
+    Optional<String> newChatTitle,
+    /**
+     * A chat photo was change to this value
+     */
+    Optional<PhotoSize[]> newChatPhoto,
+    /**
+     * Service message: the chat photo was deleted
+     */
+    Optional<Boolean> deleteChatPhoto,
+    /**
+     * Service message: the group has been created
+     */
+    Optional<Boolean> groupChatCreated,
+    /**
+     * Service message: the supergroup has been created. 
+     * This field can't be received in a message coming through updates, 
+     * because bot can't be a member of a supergroup when it is created. 
+     * It can only be found in reply_to_message if someone replies to a very first message 
+     * in a directly created supergroup.
+     */
+    Optional<Boolean> supergroupChatCreated,
+    /**
+     * Service message: the channel has been created. 
+     * This field can't be received in a message coming through updates, 
+     * because bot can't be a member of a channel when it is created. 
+     * It can only be found in reply_to_message if someone replies to a very first message in a channel.
+     */
+    Optional<Boolean> channelChatCreated,
+    /**
+     * Service message: auto-delete timer settings changed in the chat
+     */
+    Optional<MessageAutoDeleteTimerChanged> messageAutoDeleteTimerChanged,
+    /**
+     * The group has been migrated to a supergroup with the specified identifier. 
+     * This number may have more than 32 significant bits and some programming languages 
+     * may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, 
+     * so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
+     */
+    //TODO: Update precisions
+    Optional<Integer> migrateToChatId,
+    /**
+     * The supergroup has been migrated from a group with the specified identifier. 
+     * This number may have more than 32 significant bits and some programming languages 
+     * may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, 
+     * so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
+     */
+    //TODO: Update precisions
+    Optional<Integer> migrateFromChatId,
+    /**
+     * Specified message was pinned. Note that the Message object in this field will not contain 
+     * further reply_to_message fields even if it is itself a reply.
+     */
+    Optional<Message> pinnedMessage
 ) 
 {
 
