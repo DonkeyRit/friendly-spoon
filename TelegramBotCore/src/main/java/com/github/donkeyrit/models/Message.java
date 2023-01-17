@@ -241,7 +241,12 @@ public record Message(
      * Specified message was pinned. Note that the Message object in this field will not contain 
      * further reply_to_message fields even if it is itself a reply.
      */
-    Optional<Message> pinnedMessage
+    Optional<Message> pinnedMessage,
+    /**
+     * Message is an invoice for a payment, information about the invoice. 
+     * More about payments »
+     */
+    Optional<Invoice> invoice
 ) 
 {
 

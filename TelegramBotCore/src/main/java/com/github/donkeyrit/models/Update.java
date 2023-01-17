@@ -15,7 +15,19 @@ public record Update(
     /**
      * New incoming message of any kind - text, photo, sticker, etc.
      */
-    Optional<Message> message
+    Optional<Message> message,
+    /**
+     * New version of a message that is known to the bot and was edited
+     */
+    Optional<Message> editedMessage,
+    /**
+     * New incoming channel post of any kind - text, photo, sticker, etc.
+     */
+    Optional<Message> channelPost,
+    /**
+     * New version of a channel post that is known to the bot and was edited
+     */
+    Optional<Message> editedChannelPost
 )
 {
 }
