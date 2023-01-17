@@ -127,7 +127,15 @@ public record Message(
     /**
      * Message is a sticker, information about the sticker
      */
-    Optional<Sticker> sticker
+    Optional<Sticker> sticker,
+    /**
+     * Message is a video, information about the video
+     */
+    Optional<Video> video,
+    /**
+     * Message is a video note, information about the video message
+     */
+    Optional<VideoNote> videoNote
 ) 
 {
 
