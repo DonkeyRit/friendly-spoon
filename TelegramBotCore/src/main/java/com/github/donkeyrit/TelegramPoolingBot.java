@@ -1,8 +1,9 @@
 package com.github.donkeyrit;
 
 import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
-import com.github.donkeyrit.settings.TelegramBotSettings;
 import com.github.donkeyrit.http.executor.HttpClientExecutor;
+import com.github.donkeyrit.models.Update;
+import com.github.donkeyrit.models.User;
 
 import java.net.URI;
 
@@ -24,16 +25,17 @@ public class TelegramPoolingBot
 		this.jsonObjectMapper = jsonObjectMapper;
     }
     
-    public TelegramBotSettings GetMe() throws Exception
+    public User GetMe() throws Exception
     {
 		String urlStr = String.format("https://api.telegram.org/bot%s/getMe", this.configurationSettings.botApiKey());
 		String responseJson = httpClientExecutor.Get(new URI(urlStr));
-		return jsonObjectMapper.readValue(responseJson, TelegramBotSettings.class);
+		return jsonObjectMapper.readValue(responseJson, User.class);
     }
 
-	public void GetUpdates() throws Exception
+	public Update GetUpdates() throws Exception
 	{
 		String urlStr = String.format("https://api.telegram.org/bot%s/getUpdates", this.configurationSettings.botApiKey());
 		String responseJson = httpClientExecutor.Post(new URI(urlStr), "{}");
+		return jsonObjectMapper.readValue(responseJson, Update.class);
 	}
 }
