@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models;
+package com.github.donkeyrit.models.response;
 
 /**
  * This object represents one size of a photo or a file / sticker thumbnail.

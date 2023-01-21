@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models;
+package com.github.donkeyrit.models.response;
 
 /**
  * This object represents an animated emoji that displays a random value.

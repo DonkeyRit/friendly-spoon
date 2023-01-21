@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models;
+package com.github.donkeyrit.models.response;
 
 /**
  * This object contains information about an incoming shipping query.

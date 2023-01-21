@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models;
+package com.github.donkeyrit.models.response;
 
 /**
  * This object contains information about one answer option in a poll.

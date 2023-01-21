@@ -1,7 +1,8 @@
-package com.github.donkeyrit.models;
+package com.github.donkeyrit.models.response;
 
-import com.github.donkeyrit.models.enums.ChatType;
 import java.util.Optional;
+
+import com.github.donkeyrit.models.response.enums.ChatType;
 
 /**
  * This object represents a chat.

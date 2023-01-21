@@ -1,9 +1,9 @@
 package com.github.donkeyrit;
 
-import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
+import com.github.donkeyrit.configurations.models.TelegramBotConfigurationSettings;
 import com.github.donkeyrit.http.executor.HttpClientExecutor;
-import com.github.donkeyrit.models.Update;
-import com.github.donkeyrit.models.User;
+import com.github.donkeyrit.models.response.Update;
+import com.github.donkeyrit.models.response.User;
 
 import java.net.URI;
 

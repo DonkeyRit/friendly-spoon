@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models;
+package com.github.donkeyrit.models.response;
 
 /**
  * Represents a chat member that was banned in the chat and can't return to the chat or view chat messages.
