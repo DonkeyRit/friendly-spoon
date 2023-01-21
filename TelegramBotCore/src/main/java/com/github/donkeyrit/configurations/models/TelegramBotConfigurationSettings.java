@@ -1,4 +1,4 @@
-package com.github.donkeyrit.settings;
+package com.github.donkeyrit.configurations.models;
 
 public record TelegramBotConfigurationSettings(
     String botApiKey
