@@ -9,7 +9,5 @@ import java.util.Optional;
 public interface TelegramBot 
 {
     User getMe() throws Exception;
-    
-    Update getUpdates() throws Exception;
-    Update getUpdates(GetUpdatesRequest request) throws Exception;
+    Update[] getUpdates(Optional<GetUpdatesRequest> request) throws Exception;
 }

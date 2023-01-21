@@ -2,49 +2,52 @@ package com.github.donkeyrit.bot;
 
 import com.github.donkeyrit.configurations.models.TelegramBotConfigurationSettings;
 import com.github.donkeyrit.http.executor.HttpClientExecutor;
+import com.github.donkeyrit.http.query.QueryBuilder;
 import com.github.donkeyrit.models.request.GetUpdatesRequest;
 import com.github.donkeyrit.models.response.Update;
 import com.github.donkeyrit.models.response.User;
 
 import java.util.Optional;
-import java.net.URI;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TelegramBotImpl implements TelegramBot
 {
+	private final static String BASE_URL = "https://api.telegram.org"; 
+
+
     private final TelegramBotConfigurationSettings configurationSettings;
 	private final HttpClientExecutor httpClientExecutor;
 	private final ObjectMapper jsonObjectMapper;
+	private final QueryBuilder queryBuilder;
 
     public TelegramBotImpl(
 		TelegramBotConfigurationSettings configurationSettings, 
 		HttpClientExecutor httpClientExecutor,
-		ObjectMapper jsonObjectMapper)
+		ObjectMapper jsonObjectMapper,
+		QueryBuilder queryBuilder)
     {
         this.configurationSettings = configurationSettings;
 		this.httpClientExecutor = httpClientExecutor;
 		this.jsonObjectMapper = jsonObjectMapper;
+		this.queryBuilder = queryBuilder
+			.setBaseUrl(BASE_URL)
+			.setApiKey(this.configurationSettings.botApiKey());
     }
     
     public User getMe() throws Exception
     {
-		String urlStr = String.format("https://api.telegram.org/bot%s/getMe", this.configurationSettings.botApiKey());
-		String responseJson = httpClientExecutor.Get(new URI(urlStr));
+		String responseJson = httpClientExecutor.Get(queryBuilder.buildQuery("getMe"));
 		return jsonObjectMapper.readValue(responseJson, User.class);
     }
 
-	public Update getUpdates(GetUpdatesRequest request) throws Exception
+	public Update[] getUpdates(Optional<GetUpdatesRequest> request) throws Exception
 	{
-		String urlStr = String.format("https://api.telegram.org/bot%s/getUpdates", this.configurationSettings.botApiKey());
-		String responseJson = httpClientExecutor.Post(new URI(urlStr), "{}");
-		return jsonObjectMapper.readValue(responseJson, Update.class);
-	}
-
-	public Update getUpdates() throws Exception
-	{
-		String urlStr = String.format("https://api.telegram.org/bot%s/getUpdates", this.configurationSettings.botApiKey());
-		String responseJson = httpClientExecutor.Post(new URI(urlStr), "{}");
-		return jsonObjectMapper.readValue(responseJson, Update.class);
+		String requestJson = request.isPresent() 
+			? jsonObjectMapper.writeValueAsString(request)
+			: "{}";
+		
+		String responseJson = httpClientExecutor.Post(queryBuilder.buildQuery("getUpdates"), requestJson);
+		return jsonObjectMapper.readValue(responseJson, Update[].class);
 	}
 }
