@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Optional;
 
 public class App {
-  public static void main1(String[] args) throws Exception {
+  public static void main(String[] args) throws Exception {
 
     TelegramBotConfigurationSettings configurationSettings = ConfigurationManager.GetTelegramBotConfiguration();
     ObjectMapper jsonObjectMapper = new ObjectMapper();
@@ -34,6 +34,7 @@ public class App {
     while(true)
     {
       Update[] updates = telegramPoolingBot.getUpdates(Optional.empty());
+      Thread.sleep(2000);
       System.out.println(updates);
     }
   }

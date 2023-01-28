@@ -2,7 +2,7 @@ package com.github.donkeyrit.exceptions;
 
 public class TelegramApiException extends Exception
 {
-    private static final String PREFIX = "Request to Telegram API was failed.";
+    private static final String PREFIX = "Request to Telegram API was failed. ";
 
     public TelegramApiException(String message) 
     {

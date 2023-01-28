@@ -3,30 +3,32 @@ package com.github.donkeyrit.http.query;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URI;
-import java.net.URL;
+
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class TelegramApiQueryBuilder implements QueryBuilder 
 {
-    private String baseUrl;
+    private String host;
     private String apiKey;
-
+    
     @Override
-    public QueryBuilder setBaseUrl(String url) {
-        this.baseUrl = url;
+    public QueryBuilder setBaseUrl(String url) 
+    {
+        this.host = url;
         return this;
     }
 
     @Override
-    public QueryBuilder setApiKey(String apiKey) {
+    public QueryBuilder setApiKey(String apiKey) 
+    {
         this.apiKey = apiKey;
         return this;
     }
 
     @Override
-    public URI buildQuery(String method) throws MalformedURLException, URISyntaxException {
-
-        URL base = new URL(this.baseUrl, this.apiKey, method);
-        return base.toURI();
+    public URI buildQuery(String method) throws MalformedURLException, URISyntaxException 
+    {
+        return new URI(this.host + "/bot" + this.apiKey + "/" + method);
     }
-
 }
