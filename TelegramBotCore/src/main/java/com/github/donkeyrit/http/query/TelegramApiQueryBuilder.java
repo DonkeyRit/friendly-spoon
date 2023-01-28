@@ -29,6 +29,7 @@ public class TelegramApiQueryBuilder implements QueryBuilder
     @Override
     public URI buildQuery(String method) throws MalformedURLException, URISyntaxException 
     {
+        //TODO: Reduce memory allocations
         return new URI(this.host + "/bot" + this.apiKey + "/" + method);
     }
 }
