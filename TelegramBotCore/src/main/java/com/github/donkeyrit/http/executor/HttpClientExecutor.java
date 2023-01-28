@@ -1,12 +1,12 @@
 package com.github.donkeyrit.http.executor;
 
-import com.github.donkeyrit.exceptions.TelegramApiRequestException;
+import com.github.donkeyrit.exceptions.TelegramApiException;
 
 import java.io.IOException;
 import java.net.URI;
 
-public abstract class HttpClientExecutor
+public interface HttpClientExecutor<T, E>
 {
-    public abstract String Get(URI uri) throws TelegramApiRequestException, IOException, InterruptedException;
-    public abstract String Post(URI uri, String JSON) throws TelegramApiRequestException, IOException, InterruptedException;
+    E Get(URI uri) throws TelegramApiException, IOException, InterruptedException;
+    E Post(URI uri, T content) throws TelegramApiException, IOException, InterruptedException;
 }

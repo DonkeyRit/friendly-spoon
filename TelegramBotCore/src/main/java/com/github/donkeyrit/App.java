@@ -1,25 +1,26 @@
 package com.github.donkeyrit;
 
-import com.github.donkeyrit.bot.TelegramBotImpl;
-import com.github.donkeyrit.configurations.ConfigurationManager;
 import com.github.donkeyrit.configurations.models.TelegramBotConfigurationSettings;
+import com.github.donkeyrit.configurations.ConfigurationManager;
 import com.github.donkeyrit.http.executor.HttpClientExecutor;
-import com.github.donkeyrit.http.executor.HttpClientJsonExecutor;
-import com.github.donkeyrit.http.query.QueryBuilder;
+import com.github.donkeyrit.http.executor.HttpClientTelegramJsonExecutor;
 import com.github.donkeyrit.http.query.TelegramApiQueryBuilder;
+import com.github.donkeyrit.http.query.QueryBuilder;
 import com.github.donkeyrit.models.response.Update;
 import com.github.donkeyrit.models.response.User;
+import com.github.donkeyrit.bot.TelegramBotImpl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
 public class App {
-  public static void main(String[] args) throws Exception {
+  public static void main1(String[] args) throws Exception {
 
     TelegramBotConfigurationSettings configurationSettings = ConfigurationManager.GetTelegramBotConfiguration();
     ObjectMapper jsonObjectMapper = new ObjectMapper();
-    HttpClientExecutor httpClientExecutor = new HttpClientJsonExecutor(jsonObjectMapper);
+    HttpClientExecutor<String, JsonNode> httpClientExecutor = new HttpClientTelegramJsonExecutor(jsonObjectMapper);
     QueryBuilder queryBuilder = new TelegramApiQueryBuilder();
     TelegramBotImpl telegramPoolingBot = new TelegramBotImpl(
         configurationSettings,
