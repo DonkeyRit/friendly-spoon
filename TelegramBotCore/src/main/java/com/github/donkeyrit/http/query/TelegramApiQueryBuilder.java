@@ -4,9 +4,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URI;
 
-import java.nio.file.Paths;
-import java.nio.file.Path;
-
 public class TelegramApiQueryBuilder implements QueryBuilder 
 {
     private String host;

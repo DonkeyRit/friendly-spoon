@@ -11,6 +11,7 @@ import com.github.donkeyrit.models.response.User;
 import com.github.donkeyrit.bot.TelegramBotImpl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class App {
 
     TelegramBotConfigurationSettings configurationSettings = ConfigurationManager.GetTelegramBotConfiguration();
     ObjectMapper jsonObjectMapper = new ObjectMapper();
+    jsonObjectMapper.registerModule(new Jdk8Module());
     HttpClientExecutor<String, JsonNode> httpClientExecutor = new HttpClientTelegramJsonExecutor(jsonObjectMapper);
     QueryBuilder queryBuilder = new TelegramApiQueryBuilder();
     TelegramBotImpl telegramPoolingBot = new TelegramBotImpl(
