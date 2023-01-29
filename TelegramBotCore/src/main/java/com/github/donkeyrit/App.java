@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.time.Duration;
 import java.util.Optional;
 
 public class App {
@@ -36,7 +37,7 @@ public class App {
     while(true)
     {
       Update[] updates = telegramPoolingBot.getUpdates(Optional.empty());
-      Thread.sleep(2000);
+      Thread.sleep(Duration.ofSeconds(10));
       System.out.println(updates);
     }
   }
