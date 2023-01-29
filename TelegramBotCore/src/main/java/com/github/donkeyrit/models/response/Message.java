@@ -1,7 +1,12 @@
 package com.github.donkeyrit.models.response;
 
+import com.github.donkeyrit.utils.Deserializers.UnixTimestampOptionalInstantDeserializer;
+import com.github.donkeyrit.utils.Deserializers.UnixTimestampDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Optional;
+import java.time.Instant;
 
 /**
  * This object represents a message.
@@ -36,8 +41,8 @@ public record Message(
     /**
      * Date the message was sent in Unix time
      */
-    // TODO: Convert to real datetime
-    int date,
+    @JsonDeserialize(using = UnixTimestampDeserializer.class)
+    Instant date,
     /**
      * Conversation the message belongs to
      */
@@ -73,9 +78,8 @@ public record Message(
     /**
      * For forwarded messages, date the original message was sent in Unix time
      */
-    // TODO: Convert to real datetime
-    @JsonProperty(value = "forward_date")
-    Optional<Integer> forwardDate,
+    @JsonDeserialize(using = UnixTimestampOptionalInstantDeserializer.class)
+    Optional<Instant> forwardDate,
     /**
      * True, if the message is sent to a forum topic
      */
@@ -101,7 +105,6 @@ public record Message(
     /**
      * Date the message was last edited in Unix time
      */
-    // TODO: Convert to real datetime
     @JsonProperty(value = "edit_date")
     Optional<Integer> editDate,
     /**

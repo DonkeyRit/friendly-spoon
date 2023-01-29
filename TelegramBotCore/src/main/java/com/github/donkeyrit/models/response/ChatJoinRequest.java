@@ -1,6 +1,10 @@
 package com.github.donkeyrit.models.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.donkeyrit.utils.Deserializers.UnixTimestampDeserializer;
+
 import java.util.Optional;
+import java.time.Instant;
 
 /**
  * Represents a join request sent to a chat.
@@ -18,8 +22,8 @@ public record ChatJoinRequest(
     /**
      * Date the request was sent in Unix time
      */
-    //TODO: Use date
-    int date,
+    @JsonDeserialize(using = UnixTimestampDeserializer.class)
+    Instant date,
     /**
      * Bio of the user.
      */

@@ -1,5 +1,10 @@
 package com.github.donkeyrit.models.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.donkeyrit.utils.Deserializers.UnixTimestampDeserializer;
+
+import java.time.Instant;
+
 /**
  * Represents a chat member that is under certain restrictions in the chat. Supergroups only.
  * @see <a href="https://core.telegram.org/bots/api#chatmemberrestricted">Telegram API ChatMemberRestricted</a>
@@ -48,8 +53,9 @@ public class ChatMemberRestricted extends ChatMember
      */
     boolean canAddWebPagePreviews;
     /**
-     * Date when restrictions will be lifted for this user; unix time. If 0, then the user is restricted forever
+     * Date when restrictions will be lifted for this user; unix time. 
+     * If 0, then the user is restricted forever
      */
-    //TODO: Use date
-    int until_date;
+    @JsonDeserialize(using = UnixTimestampDeserializer.class)
+    Instant until_date;
 }

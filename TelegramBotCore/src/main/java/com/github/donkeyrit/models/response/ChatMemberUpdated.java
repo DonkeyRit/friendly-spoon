@@ -1,6 +1,10 @@
 package com.github.donkeyrit.models.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.donkeyrit.utils.Deserializers.UnixTimestampDeserializer;
+
 import java.util.Optional;
+import java.time.Instant;
 
 /**
  * This object represents changes in the status of a chat member.
@@ -18,8 +22,8 @@ public record ChatMemberUpdated(
     /**
      * Date the change was done in Unix time
      */
-    //TODO: Use data
-    int date,
+    @JsonDeserialize(using = UnixTimestampDeserializer.class)
+    Instant date,
     /**
      * Previous information about the chat member
      */
