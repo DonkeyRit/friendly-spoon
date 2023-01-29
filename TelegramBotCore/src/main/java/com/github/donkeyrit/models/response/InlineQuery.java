@@ -2,6 +2,7 @@ package com.github.donkeyrit.models.response;
 
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.donkeyrit.models.response.enums.ChatType;
 
 /**
@@ -33,6 +34,7 @@ public record InlineQuery(
      * The chat type should be always known for requests sent from official clients and most third-party clients, 
      * unless the request was sent from a secret chat
      */
+    @JsonProperty(value = "chat_type")
     Optional<ChatType> chatType,
     /**
      * Sender location, only for bots that request user location
