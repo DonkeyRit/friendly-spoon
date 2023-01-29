@@ -59,8 +59,8 @@ public class TelegramBotImpl implements TelegramBot
 				? jsonObjectMapper.writeValueAsString(r)
 				: "{}";
 				
-				JsonNode responseJsonNode = httpClientExecutor.Post(queryBuilder.buildQuery(GET_UPDATES), requestJson);
-				return jsonObjectMapper.treeToValue(responseJsonNode, Update[].class);
+			JsonNode responseJsonNode = httpClientExecutor.Post(queryBuilder.buildQuery(GET_UPDATES), requestJson);
+			return jsonObjectMapper.treeToValue(responseJsonNode, Update[].class);
 		};
 
 		return sendRequest(getUpdates, request);
