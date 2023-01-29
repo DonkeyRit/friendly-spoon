@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum ChatType 
 {
+    SENDER,
     PRIVATE,
     GROUP,
     SUPERGROUP, 

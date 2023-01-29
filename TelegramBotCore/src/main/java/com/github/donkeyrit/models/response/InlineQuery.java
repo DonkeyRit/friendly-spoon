@@ -2,6 +2,8 @@ package com.github.donkeyrit.models.response;
 
 import java.util.Optional;
 
+import com.github.donkeyrit.models.response.enums.ChatType;
+
 /**
  * This object represents an incoming inline query. When the user sends an empty query, 
  * your bot could return some default or trending results.
@@ -31,8 +33,7 @@ public record InlineQuery(
      * The chat type should be always known for requests sent from official clients and most third-party clients, 
      * unless the request was sent from a secret chat
      */
-    //TODO: Use enum
-    Optional<String> chatType,
+    Optional<ChatType> chatType,
     /**
      * Sender location, only for bots that request user location
      */
