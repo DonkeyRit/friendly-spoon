@@ -1,8 +1,7 @@
 package com.github.donkeyrit.models.response;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Optional;
 
 /**
  * This object represents a message.

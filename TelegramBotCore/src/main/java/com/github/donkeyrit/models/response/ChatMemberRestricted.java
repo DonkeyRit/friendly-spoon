@@ -1,7 +1,5 @@
 package com.github.donkeyrit.models.response;
 
-import java.util.Optional;
-
 /**
  * Represents a chat member that is under certain restrictions in the chat. Supergroups only.
  * @see <a href="https://core.telegram.org/bots/api#chatmemberrestricted">Telegram API ChatMemberRestricted</a>
