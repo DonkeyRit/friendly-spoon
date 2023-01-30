@@ -2,7 +2,8 @@ package com.github.donkeyrit.models.response.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public enum StickerType {
+public enum StickerType 
+{
     REGULAR, 
     MASK, 
     CUSTOM_EMOJI;

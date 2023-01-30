@@ -2,6 +2,8 @@ package com.github.donkeyrit.models.response;
 
 import java.util.Optional;
 
+import com.github.donkeyrit.models.response.enums.MessageEntityType;
+
 /**
  * This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
  * @see <a href="https://core.telegram.org/bots/api#messageentity">Telegram API MessageEntity/a>
@@ -15,8 +17,7 @@ public record MessageEntity(
      * “code” (monowidth string), “pre” (monowidth block), “text_link” (for clickable text URLs), 
      * “text_mention” (for users without usernames), “custom_emoji” (for inline custom emoji stickers)
      */
-    //TODO: Use custom enum
-    String type,
+    MessageEntityType type,
     /**
      * Offset in UTF-16 code units to the start of the entity
      */
