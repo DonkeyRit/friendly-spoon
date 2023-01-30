@@ -1,5 +1,6 @@
 package com.github.donkeyrit.models.response;
 
+import com.github.donkeyrit.models.response.enums.StickerType;
 import java.util.Optional;
 
 /**
@@ -21,8 +22,7 @@ public record Sticker(
      * The type of the sticker is independent from its format, 
      * which is determined by the fields is_animated and is_video.
      */
-    //TODO: Convert to enum
-    String type,
+    StickerType type,
     /**
      * Sticker width
      */

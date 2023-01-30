@@ -2,6 +2,8 @@ package com.github.donkeyrit.models.response;
 
 import java.util.Optional;
 
+import com.github.donkeyrit.models.response.enums.PollType;
+
 /**
  * This object contains information about a poll.
  * @see <a href="https://core.telegram.org/bots/api#poll">Telegram API Poll</a>
@@ -34,8 +36,7 @@ public record Poll(
     /**
      * Poll type, currently can be “regular” or “quiz”
      */
-    //TODO: Use enum instead of string
-    String type,
+    PollType type,
     /**
      * True, if the poll allows multiple answers
      */
