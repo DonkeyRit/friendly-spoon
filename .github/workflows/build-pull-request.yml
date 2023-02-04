@@ -1,5 +1,5 @@
 name: build-pull-request
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} triggered build for pull-request '${{ github.event.pull_request.title }}'
 on: 
   pull_request
 jobs:
