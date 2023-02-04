@@ -6,6 +6,8 @@ import com.github.donkeyrit.exceptions.TelegramApiException;
 import com.github.donkeyrit.http.executor.HttpClientExecutor;
 import com.github.donkeyrit.http.query.QueryBuilder;
 import com.github.donkeyrit.models.request.GetUpdatesRequest;
+import com.github.donkeyrit.models.request.SendMessageRequest;
+import com.github.donkeyrit.models.response.Message;
 import com.github.donkeyrit.models.response.Update;
 import com.github.donkeyrit.models.response.User;
 import com.github.donkeyrit.utils.ThrowingFunction;
@@ -20,6 +22,7 @@ public class TelegramBotImpl implements TelegramBot
 	private final static String BASE_URL = "https://api.telegram.org"; 
 	private final static String GET_ME_METHOD = "getMe";
 	private final static String GET_UPDATES = "getUpdates";
+	private final static String SEND_MESSAGE = "sendMessage";
 
     private final TelegramBotConfigurationSettings configurationSettings;
 	private final HttpClientExecutor<String, JsonNode> httpClientExecutor;
@@ -64,6 +67,13 @@ public class TelegramBotImpl implements TelegramBot
 		};
 
 		return sendRequest(getUpdates, request);
+	}
+
+	@Override
+	public <T> Optional<Message> sendMessage(SendMessageRequest<T> request) throws TelegramApiException, JacksonJsonParsingException 
+	{
+		// TODO Auto-generated method stub
+		return Optional.empty();
 	}
 
 	private <T,E> E sendRequest(ThrowingFunction<T,E> sendRequest, T request) throws TelegramApiException, JacksonJsonParsingException

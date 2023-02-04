@@ -3,7 +3,8 @@ package com.github.donkeyrit.models.request;
 import java.util.Optional;
 
 /**
- * Use this method to receive incoming updates using long polling (wiki). Returns an Array of Update objects.
+ * Use this method to receive incoming updates using long polling (wiki). 
+ * Returns an Array of Update objects.
  * @see <a href="https://core.telegram.org/bots/api#getupdates">Telegram API getUpdates</a>
  */
 public record GetUpdatesRequest(
