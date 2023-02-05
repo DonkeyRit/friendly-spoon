@@ -1,6 +1,7 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Optional;
 
 /**

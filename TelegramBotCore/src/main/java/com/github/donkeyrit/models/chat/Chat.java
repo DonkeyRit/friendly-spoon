@@ -1,5 +1,7 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat;
 
+import com.github.donkeyrit.models.chat.permissions.ChatPermissions;
+import com.github.donkeyrit.models.response.Message;
 import com.github.donkeyrit.models.response.enums.ChatType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Optional;

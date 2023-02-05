@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat.permissions;
 
 import java.util.Optional;
 

@@ -1,6 +1,7 @@
 package com.github.donkeyrit.models.response;
 
 import com.github.donkeyrit.utils.Deserializers.UnixTimestampOptionalInstantDeserializer;
+import com.github.donkeyrit.models.chat.Chat;
 import com.github.donkeyrit.utils.Deserializers.UnixTimestampDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.annotation.JsonProperty;

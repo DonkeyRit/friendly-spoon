@@ -1,4 +1,6 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat;
+
+import com.github.donkeyrit.models.response.Location;
 
 /**
  * Represents a location to which a chat is connected.

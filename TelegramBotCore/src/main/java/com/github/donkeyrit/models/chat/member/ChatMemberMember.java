@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat.member;
 
 /**
  * Represents a chat member that has no additional privileges or restrictions.

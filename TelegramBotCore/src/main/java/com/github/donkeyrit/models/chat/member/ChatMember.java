@@ -1,4 +1,6 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat.member;
+
+import com.github.donkeyrit.models.response.User;
 
 /**
  * This object contains information about one member of a chat. 

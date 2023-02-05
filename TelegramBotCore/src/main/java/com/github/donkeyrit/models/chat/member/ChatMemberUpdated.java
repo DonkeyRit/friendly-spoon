@@ -1,6 +1,9 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat.member;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.donkeyrit.models.chat.Chat;
+import com.github.donkeyrit.models.chat.ChatInviteLink;
+import com.github.donkeyrit.models.response.User;
 import com.github.donkeyrit.utils.Deserializers.UnixTimestampDeserializer;
 
 import java.util.Optional;

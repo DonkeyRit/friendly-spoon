@@ -1,6 +1,8 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.chat;
 
 import java.util.Optional;
+
+import com.github.donkeyrit.models.response.User;
 
 /**
  * Represents an invite link for a chat.
