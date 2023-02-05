@@ -14,5 +14,5 @@ public interface TelegramBot
 {
     User getMe() throws TelegramApiException, JacksonJsonParsingException;
     Update[] getUpdates(Optional<GetUpdatesRequest> request) throws TelegramApiException, JacksonJsonParsingException;
-    <T> Optional<Message> sendMessage(SendMessageRequest<T> request) throws TelegramApiException, JacksonJsonParsingException;;
+    <T> Message sendMessage(SendMessageRequest<T> request) throws TelegramApiException, JacksonJsonParsingException;;
 }

@@ -70,10 +70,16 @@ public class TelegramBotImpl implements TelegramBot
 	}
 
 	@Override
-	public <T> Optional<Message> sendMessage(SendMessageRequest<T> request) throws TelegramApiException, JacksonJsonParsingException 
+	public <T> Message sendMessage(SendMessageRequest<T> request) throws TelegramApiException, JacksonJsonParsingException 
 	{
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		ThrowingFunction<SendMessageRequest<T>, Message> sendMessage = (r) -> 
+		{
+			String requestJson = jsonObjectMapper.writeValueAsString(r);
+			JsonNode responseJsonNode = httpClientExecutor.Post(queryBuilder.buildQuery(SEND_MESSAGE), requestJson);
+			return jsonObjectMapper.treeToValue(responseJsonNode, Message.class);
+		};
+
+		return sendRequest(sendMessage, request);
 	}
 
 	private <T,E> E sendRequest(ThrowingFunction<T,E> sendRequest, T request) throws TelegramApiException, JacksonJsonParsingException
