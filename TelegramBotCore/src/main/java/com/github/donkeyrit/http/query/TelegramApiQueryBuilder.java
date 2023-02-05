@@ -8,11 +8,14 @@ public class TelegramApiQueryBuilder implements QueryBuilder
 {
     private String host;
     private String apiKey;
+
+    private String baseUrl;
     
     @Override
     public QueryBuilder setBaseUrl(String url) 
     {
         this.host = url;
+        this.baseUrl = null;
         return this;
     }
 
@@ -20,13 +23,18 @@ public class TelegramApiQueryBuilder implements QueryBuilder
     public QueryBuilder setApiKey(String apiKey) 
     {
         this.apiKey = apiKey;
+        this.baseUrl = null;
         return this;
     }
 
     @Override
     public URI buildQuery(String method) throws MalformedURLException, URISyntaxException 
     {
-        //TODO: Reduce memory allocations
-        return new URI(this.host + "/bot" + this.apiKey + "/" + method);
+        if(baseUrl == null)
+        {
+            this.baseUrl = this.host + "/bot" + this.apiKey + "/";
+        }
+        
+        return new URI(this.baseUrl + method);
     }
 }
