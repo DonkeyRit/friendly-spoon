@@ -6,8 +6,8 @@ import com.github.donkeyrit.http.executor.HttpClientExecutor;
 import com.github.donkeyrit.http.executor.HttpClientTelegramJsonExecutor;
 import com.github.donkeyrit.http.query.TelegramApiQueryBuilder;
 import com.github.donkeyrit.http.query.QueryBuilder;
-import com.github.donkeyrit.models.response.Update;
 import com.github.donkeyrit.models.response.User;
+import com.github.donkeyrit.models.update.Update;
 import com.github.donkeyrit.bot.TelegramBotImpl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

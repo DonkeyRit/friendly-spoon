@@ -5,8 +5,8 @@ import com.github.donkeyrit.exceptions.TelegramApiException;
 import com.github.donkeyrit.models.message.Message;
 import com.github.donkeyrit.models.request.GetUpdatesRequest;
 import com.github.donkeyrit.models.request.SendMessageRequest;
-import com.github.donkeyrit.models.response.Update;
 import com.github.donkeyrit.models.response.User;
+import com.github.donkeyrit.models.update.Update;
 
 import java.util.Optional;
 

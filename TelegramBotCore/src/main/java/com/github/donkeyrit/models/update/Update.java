@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.update;
 
 import java.util.Optional;
 
@@ -6,6 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.donkeyrit.models.chat.ChatJoinRequest;
 import com.github.donkeyrit.models.chat.member.ChatMemberUpdated;
 import com.github.donkeyrit.models.message.Message;
+import com.github.donkeyrit.models.response.CallbackQuery;
+import com.github.donkeyrit.models.response.ChosenInlineResult;
+import com.github.donkeyrit.models.response.InlineQuery;
+import com.github.donkeyrit.models.response.Poll;
+import com.github.donkeyrit.models.response.PollAnswer;
+import com.github.donkeyrit.models.response.PreCheckoutQuery;
+import com.github.donkeyrit.models.response.ShippingQuery;
 
 /**
  * This object represents an incoming update.
