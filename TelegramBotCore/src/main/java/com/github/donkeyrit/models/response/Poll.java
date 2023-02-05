@@ -2,6 +2,7 @@ package com.github.donkeyrit.models.response;
 
 import java.util.Optional;
 
+import com.github.donkeyrit.models.message.MessageEntity;
 import com.github.donkeyrit.models.response.enums.PollType;
 
 /**

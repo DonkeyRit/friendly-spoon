@@ -1,8 +1,8 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.message;
 
 import java.util.Optional;
 
-import com.github.donkeyrit.models.response.enums.MessageEntityType;
+import com.github.donkeyrit.models.response.User;
 
 /**
  * This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.

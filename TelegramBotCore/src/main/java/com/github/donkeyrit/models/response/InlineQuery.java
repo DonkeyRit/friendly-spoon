@@ -3,7 +3,7 @@ package com.github.donkeyrit.models.response;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.donkeyrit.models.response.enums.ChatType;
+import com.github.donkeyrit.models.chat.ChatType;
 
 /**
  * This object represents an incoming inline query. When the user sends an empty query, 

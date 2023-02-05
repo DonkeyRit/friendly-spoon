@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.donkeyrit.models.chat.ChatJoinRequest;
 import com.github.donkeyrit.models.chat.member.ChatMemberUpdated;
+import com.github.donkeyrit.models.message.Message;
 
 /**
  * This object represents an incoming update.

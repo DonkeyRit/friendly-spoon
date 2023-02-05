@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.message;
 
 /**
  * This object represents a service message about a change in auto-delete timer settings.

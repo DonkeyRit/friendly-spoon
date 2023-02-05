@@ -1,7 +1,23 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.message;
 
 import com.github.donkeyrit.utils.Deserializers.UnixTimestampOptionalInstantDeserializer;
 import com.github.donkeyrit.models.chat.Chat;
+import com.github.donkeyrit.models.game.Game;
+import com.github.donkeyrit.models.response.Animation;
+import com.github.donkeyrit.models.response.Audio;
+import com.github.donkeyrit.models.response.Contact;
+import com.github.donkeyrit.models.response.Dice;
+import com.github.donkeyrit.models.response.Document;
+import com.github.donkeyrit.models.response.Invoice;
+import com.github.donkeyrit.models.response.Location;
+import com.github.donkeyrit.models.response.PhotoSize;
+import com.github.donkeyrit.models.response.Poll;
+import com.github.donkeyrit.models.response.Sticker;
+import com.github.donkeyrit.models.response.User;
+import com.github.donkeyrit.models.response.Venue;
+import com.github.donkeyrit.models.response.Video;
+import com.github.donkeyrit.models.response.VideoNote;
+import com.github.donkeyrit.models.response.Voice;
 import com.github.donkeyrit.utils.Deserializers.UnixTimestampDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.annotation.JsonProperty;

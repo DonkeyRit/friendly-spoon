@@ -1,7 +1,7 @@
 package com.github.donkeyrit.models.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.donkeyrit.models.response.MessageEntity;
+import com.github.donkeyrit.models.message.MessageEntity;
 
 import java.util.Optional;
 

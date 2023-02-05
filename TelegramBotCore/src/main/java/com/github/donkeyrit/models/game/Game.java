@@ -1,6 +1,10 @@
-package com.github.donkeyrit.models.response;
+package com.github.donkeyrit.models.game;
 
 import java.util.Optional;
+
+import com.github.donkeyrit.models.message.MessageEntity;
+import com.github.donkeyrit.models.response.Animation;
+import com.github.donkeyrit.models.response.PhotoSize;
 
 /**
  * This object represents a game. Use BotFather to create and edit games, 

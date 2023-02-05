@@ -1,4 +1,4 @@
-package com.github.donkeyrit.models.response.enums;
+package com.github.donkeyrit.models.chat;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
