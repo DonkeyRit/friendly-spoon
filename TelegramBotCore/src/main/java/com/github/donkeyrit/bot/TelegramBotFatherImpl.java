@@ -2,7 +2,6 @@ package com.github.donkeyrit.bot;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Timer;
 
 import com.github.donkeyrit.bot.interfaces.TelegramBot;
@@ -10,7 +9,6 @@ import com.github.donkeyrit.bot.interfaces.TelegramBotFather;
 import com.github.donkeyrit.bot.tasks.CustomTimerTask;
 import com.github.donkeyrit.events.EventListener;
 import com.github.donkeyrit.events.models.EventType;
-import com.github.donkeyrit.events.models.UpdateReceivedEvent;
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;
 import com.github.donkeyrit.models.response.User;

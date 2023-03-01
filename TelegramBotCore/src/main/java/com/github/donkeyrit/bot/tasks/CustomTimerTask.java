@@ -5,7 +5,6 @@ import java.util.TimerTask;
 
 import com.github.donkeyrit.bot.interfaces.TelegramBot;
 import com.github.donkeyrit.events.EventListener;
-import com.github.donkeyrit.events.models.EventType;
 import com.github.donkeyrit.events.models.UpdateReceivedEvent;
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;
