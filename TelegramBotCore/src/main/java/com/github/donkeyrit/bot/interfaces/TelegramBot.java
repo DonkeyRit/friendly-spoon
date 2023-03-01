@@ -1,4 +1,4 @@
-package com.github.donkeyrit.bot;
+package com.github.donkeyrit.bot.interfaces;
 
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;

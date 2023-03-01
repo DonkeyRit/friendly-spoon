@@ -1,5 +1,6 @@
 package com.github.donkeyrit.bot;
 
+import com.github.donkeyrit.bot.interfaces.TelegramBot;
 import com.github.donkeyrit.configurations.models.TelegramBotConfigurationSettings;
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;
