@@ -37,6 +37,6 @@ public class App
     User bot = botFather.init();
     System.out.println("Bot - " + bot);
 
-    botFather.registerListener(new UpdateEventListener());
+    botFather.registerUpdateEventListener(new UpdateEventListener());
   }
 }

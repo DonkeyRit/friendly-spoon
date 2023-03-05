@@ -1,5 +1,6 @@
 package com.github.donkeyrit.bot.tasks;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.TimerTask;
 
@@ -8,17 +9,18 @@ import com.github.donkeyrit.events.EventListener;
 import com.github.donkeyrit.events.models.UpdateReceivedEvent;
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;
+import com.github.donkeyrit.listeners.UpdateEventListener;
 import com.github.donkeyrit.models.update.Update;
 
-public class CustomTimerTask extends TimerTask 
+public class GetUpdatesTimerTask extends TimerTask 
 {
     private final TelegramBot bot;
-    private final EventListener<Update> listener;
+    private final List<UpdateEventListener> listeners;
     
-    public CustomTimerTask(TelegramBot bot, EventListener<Update> listener) 
+    public GetUpdatesTimerTask(TelegramBot bot, List<UpdateEventListener> listeners) 
     {
         this.bot = bot;
-        this.listener = listener;
+        this.listeners = listeners;
     }
     
     @Override
@@ -29,7 +31,8 @@ public class CustomTimerTask extends TimerTask
             Update[] updates = bot.getUpdates(Optional.empty());
             for (Update update : updates) 
             {
-                listener.handleEvent(new UpdateReceivedEvent(update));
+                UpdateReceivedEvent updateReceivedEvent = new UpdateReceivedEvent(update);
+                listeners.forEach(listener -> listener.handleEvent(updateReceivedEvent));
             }
         } 
         catch (TelegramApiException e) 
@@ -39,6 +42,11 @@ public class CustomTimerTask extends TimerTask
         catch (JacksonJsonParsingException e) 
         {
             e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Something went wrong");
+            System.out.println(e);
         }
     }
 }
