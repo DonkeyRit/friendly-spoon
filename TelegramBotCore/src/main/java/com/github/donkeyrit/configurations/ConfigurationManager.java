@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import com.github.donkeyrit.settings.TelegramBotConfigurationSettings;
+import com.github.donkeyrit.configurations.models.TelegramBotConfigurationSettings;
 
 public final class ConfigurationManager 
 {
