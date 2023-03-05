@@ -16,6 +16,7 @@ import com.github.donkeyrit.utils.ThrowingFunction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import com.google.inject.Inject;
 import java.util.Optional;
 
 public class TelegramBotImpl implements TelegramBot
@@ -30,6 +31,7 @@ public class TelegramBotImpl implements TelegramBot
 	private final ObjectMapper jsonObjectMapper;
 	private final QueryBuilder queryBuilder;
 
+	@Inject
     public TelegramBotImpl(
 		TelegramBotConfigurationSettings configurationSettings, 
 		HttpClientExecutor<String, JsonNode> httpClientExecutor,
