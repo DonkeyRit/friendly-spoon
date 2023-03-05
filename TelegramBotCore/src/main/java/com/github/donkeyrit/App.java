@@ -5,6 +5,8 @@ import com.github.donkeyrit.configurations.ConfigurationManager;
 import com.github.donkeyrit.http.executor.HttpClientExecutor;
 import com.github.donkeyrit.http.executor.HttpClientTelegramJsonExecutor;
 import com.github.donkeyrit.http.query.TelegramApiQueryBuilder;
+import com.github.donkeyrit.ioc.DaggerTelegramApiComponent;
+import com.github.donkeyrit.ioc.TelegramApiComponent;
 import com.github.donkeyrit.listeners.UpdateEventListener;
 import com.github.donkeyrit.http.query.QueryBuilder;
 import com.github.donkeyrit.models.response.User;
@@ -21,7 +23,16 @@ public class App
 {
   public static void main(String[] args) throws Exception 
   {
+    TelegramApiComponent component = DaggerTelegramApiComponent.create();
+    TelegramBotFather botFather = component.buildTelegramBotFather();
+    User bot = botFather.init();
+    System.out.println("Bot - " + bot);
 
+    botFather.registerUpdateEventListener(new UpdateEventListener());
+  }
+
+  private static void register()
+  {
     TelegramBotConfigurationSettings configurationSettings = ConfigurationManager.GetTelegramBotConfiguration();
     ObjectMapper jsonObjectMapper = new ObjectMapper();
     jsonObjectMapper.registerModule(new Jdk8Module());
@@ -34,9 +45,5 @@ public class App
         queryBuilder);
 
     TelegramBotFather botFather = new TelegramBotFatherImpl(telegramPoolingBot);
-    User bot = botFather.init();
-    System.out.println("Bot - " + bot);
-
-    botFather.registerUpdateEventListener(new UpdateEventListener());
   }
 }

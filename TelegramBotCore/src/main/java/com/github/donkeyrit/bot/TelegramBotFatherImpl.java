@@ -1,21 +1,18 @@
 package com.github.donkeyrit.bot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 
-import com.github.donkeyrit.bot.interfaces.TelegramBot;
-import com.github.donkeyrit.bot.interfaces.TelegramBotFather;
-import com.github.donkeyrit.bot.tasks.GetUpdatesTimerTask;
-import com.github.donkeyrit.events.EventListener;
-import com.github.donkeyrit.events.models.EventType;
+import javax.inject.Inject;
+
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;
+import com.github.donkeyrit.bot.interfaces.TelegramBotFather;
+import com.github.donkeyrit.bot.interfaces.TelegramBot;
+import com.github.donkeyrit.bot.tasks.GetUpdatesTimerTask;
 import com.github.donkeyrit.listeners.UpdateEventListener;
 import com.github.donkeyrit.models.response.User;
-import com.github.donkeyrit.models.update.Update;
 
 public class TelegramBotFatherImpl implements TelegramBotFather
 {
@@ -24,7 +21,7 @@ public class TelegramBotFatherImpl implements TelegramBotFather
 
     private final Timer getUpdatesTimer;
 
-
+    @Inject
     public TelegramBotFatherImpl(TelegramBot bot)
     {
         this.bot = bot;

@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 public class TelegramBotImpl implements TelegramBot
 {
 	private final static String BASE_URL = "https://api.telegram.org"; 
@@ -30,6 +32,7 @@ public class TelegramBotImpl implements TelegramBot
 	private final ObjectMapper jsonObjectMapper;
 	private final QueryBuilder queryBuilder;
 
+	@Inject
     public TelegramBotImpl(
 		TelegramBotConfigurationSettings configurationSettings, 
 		HttpClientExecutor<String, JsonNode> httpClientExecutor,
