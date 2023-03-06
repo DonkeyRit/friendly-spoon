@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.URI;
 
+import java.util.logging.Logger;
 import java.io.IOException;
 
 public class HttpClientTelegramJsonExecutor implements HttpClientExecutor<String, JsonNode>
@@ -22,14 +23,16 @@ public class HttpClientTelegramJsonExecutor implements HttpClientExecutor<String
     private static final String DESCRIPTION_FIELD = "description";
     private static final String RESULT_FiELD = "result";
 
-    private final HttpClient client;
     private final ObjectMapper objectMapper;
+    private final HttpClient client;
+    private final Logger logger;
 
     @Inject
-    public HttpClientTelegramJsonExecutor(ObjectMapper objectMapper)
+    public HttpClientTelegramJsonExecutor(ObjectMapper objectMapper, Logger logger)
     {
-        this.objectMapper = objectMapper;
         this.client = HttpClient.newHttpClient();
+        this.objectMapper = objectMapper;
+        this.logger = logger;
     }
 
     @Override
