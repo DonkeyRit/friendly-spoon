@@ -6,17 +6,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch NoVisibility",
-            "request": "launch",
-            "mainClass": "com.github.donkeyrit.NoVisibility",
-            "projectName": "UnfollowedMeBot"
-        },
-        {
-            "type": "java",
             "name": "Launch App",
             "request": "launch",
             "mainClass": "com.github.donkeyrit.App",
-            "projectName": ""
+            "projectName": "",
+            "vmArgs": "-Djava.util.logging.config.file=/Users/dimaalekseev/Reps/friendly-spoon/TelegramBotCore/src/resources/logging.properties"
         },
         {
             "type": "java",
