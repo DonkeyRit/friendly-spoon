@@ -11,19 +11,22 @@ import com.github.donkeyrit.models.response.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 
 public class TelegramBotFatherImpl implements TelegramBotFather
 {
     private final TelegramBot bot;
+    private final Logger logger;
     private final List<UpdateEventListener> updateEventListeners;
 
     private final Timer getUpdatesTimer;
 
     @Inject
-    public TelegramBotFatherImpl(TelegramBot bot)
+    public TelegramBotFatherImpl(TelegramBot bot, Logger logger)
     {
+        this.logger = logger;
         this.bot = bot;
         updateEventListeners = new ArrayList<>();
         getUpdatesTimer = new Timer();
