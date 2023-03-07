@@ -27,6 +27,7 @@ public class GetUpdatesTimerTask extends TimerTask
         this.listeners = listeners;
         this.logger = logger;
         this.bot = bot;
+        this.offset = Optional.empty();
     }
     
     @Override
@@ -56,7 +57,7 @@ public class GetUpdatesTimerTask extends TimerTask
         }
         catch (Exception e)
         {
-            logger.log(Level.SEVERE, "Something went wrong", e);
+            logger.log(Level.SEVERE, "Something went wrong.", e);
         }
     }
 }
