@@ -42,7 +42,7 @@ public class TelegramBotFatherImpl implements TelegramBotFather
     @Override
     public User init() throws TelegramApiException, JacksonJsonParsingException 
     {
-        GetUpdatesTimerTask getUpdatesTimerTask = new GetUpdatesTimerTask(bot, updateEventListeners);
+        GetUpdatesTimerTask getUpdatesTimerTask = new GetUpdatesTimerTask(bot, updateEventListeners, logger);
         getUpdatesTimer.schedule(getUpdatesTimerTask, 0, 10000);
         
         return bot.getMe();
