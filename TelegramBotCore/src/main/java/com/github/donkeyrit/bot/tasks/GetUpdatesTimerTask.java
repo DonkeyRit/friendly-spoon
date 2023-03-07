@@ -2,8 +2,8 @@ package com.github.donkeyrit.bot.tasks;
 
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;
+import com.github.donkeyrit.events.interfaces.EventSource;
 import com.github.donkeyrit.events.models.UpdateReceivedEvent;
-import com.github.donkeyrit.listeners.UpdateEventListener;
 import com.github.donkeyrit.bot.interfaces.TelegramBot;
 import com.github.donkeyrit.models.request.GetUpdatesRequest;
 import com.github.donkeyrit.models.update.Update;
@@ -12,19 +12,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.TimerTask;
 import java.util.Optional;
-import java.util.List;
 
 public class GetUpdatesTimerTask extends TimerTask 
 {
-    private final List<UpdateEventListener> listeners;
+    private final EventSource<Update> updatesEventSource;
     private final TelegramBot bot;
     private final Logger logger;
     
     private Optional<Integer> offset;
 
-    public GetUpdatesTimerTask(TelegramBot bot, List<UpdateEventListener> listeners, Logger logger) 
+    public GetUpdatesTimerTask(TelegramBot bot, EventSource<Update> updatesEventSource, Logger logger) 
     {
-        this.listeners = listeners;
+        this.updatesEventSource = updatesEventSource;
         this.logger = logger;
         this.bot = bot;
         this.offset = Optional.empty();
@@ -44,7 +43,7 @@ public class GetUpdatesTimerTask extends TimerTask
                 logger.log(Level.INFO, () -> "Update id - " + update.updateId());
                 offset = Optional.of(update.updateId() + 1);
                 UpdateReceivedEvent updateReceivedEvent = new UpdateReceivedEvent(update);
-                listeners.forEach(listener -> listener.handleEvent(updateReceivedEvent));
+                this.updatesEventSource.notifyListeners(updateReceivedEvent);
             }
         } 
         catch (TelegramApiException e) 

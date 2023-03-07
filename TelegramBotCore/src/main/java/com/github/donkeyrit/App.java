@@ -1,7 +1,6 @@
 package com.github.donkeyrit;
 
-import java.util.logging.Logger;
-
+import com.github.donkeyrit.bot.interfaces.TelegramBot;
 import com.github.donkeyrit.bot.interfaces.TelegramBotFather;
 import com.github.donkeyrit.ioc.TelegramApiBaseModules;
 import com.github.donkeyrit.listeners.UpdateEventListener;
@@ -9,6 +8,7 @@ import com.github.donkeyrit.models.response.User;
 
 import com.google.inject.Injector;
 import com.google.inject.Guice;
+import java.util.logging.Logger;
 
 public class App 
 {
@@ -23,6 +23,7 @@ public class App
     User bot = botFather.init();
     logger.info(() -> "Telegram Bot - " + bot.firstName());
 
-    botFather.registerUpdateEventListener(new UpdateEventListener(logger));
+    UpdateEventListener eventListener = new UpdateEventListener(logger, injector.getInstance(TelegramBot.class));
+    botFather.getUpdatesEventSource().addListener(eventListener);
   }
 }
