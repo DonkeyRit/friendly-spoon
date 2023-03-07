@@ -1,51 +1,64 @@
 package com.github.donkeyrit.bot.tasks;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.TimerTask;
-
-import com.github.donkeyrit.bot.interfaces.TelegramBot;
-import com.github.donkeyrit.events.models.UpdateReceivedEvent;
 import com.github.donkeyrit.exceptions.JacksonJsonParsingException;
 import com.github.donkeyrit.exceptions.TelegramApiException;
-import com.github.donkeyrit.listeners.UpdateEventListener;
+import com.github.donkeyrit.events.interfaces.EventSource;
+import com.github.donkeyrit.events.models.UpdateReceivedEvent;
+import com.github.donkeyrit.bot.interfaces.TelegramBot;
+import com.github.donkeyrit.models.request.GetUpdatesRequest;
 import com.github.donkeyrit.models.update.Update;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.TimerTask;
+import java.util.Optional;
 
 public class GetUpdatesTimerTask extends TimerTask 
 {
+    private final EventSource<Update> updatesEventSource;
     private final TelegramBot bot;
-    private final List<UpdateEventListener> listeners;
+    private final Logger logger;
     
-    public GetUpdatesTimerTask(TelegramBot bot, List<UpdateEventListener> listeners) 
+    private Optional<Integer> offset;
+
+    public GetUpdatesTimerTask(TelegramBot bot, EventSource<Update> updatesEventSource, Logger logger) 
     {
+        this.updatesEventSource = updatesEventSource;
+        this.logger = logger;
         this.bot = bot;
-        this.listeners = listeners;
+        this.offset = Optional.empty();
     }
     
     @Override
     public void run() 
     {
+        //TODO: Avoid collisions when bot received a lot of updates
         try 
         {
-            Update[] updates = bot.getUpdates(Optional.empty());
+            logger.log(Level.INFO, () -> "Update offset - " + (offset.isPresent() ? offset.get() : "null"));
+            GetUpdatesRequest request = GetUpdatesRequest.of(this.offset);
+            Update[] updates = bot.getUpdates(Optional.of(request));
             for (Update update : updates) 
             {
+                logger.log(Level.INFO, () -> "Update id - " + update.updateId());
+                offset = Optional.of(update.updateId() + 1);
                 UpdateReceivedEvent updateReceivedEvent = new UpdateReceivedEvent(update);
-                listeners.forEach(listener -> listener.handleEvent(updateReceivedEvent));
+                this.updatesEventSource.notifyListeners(updateReceivedEvent);
             }
         } 
         catch (TelegramApiException e) 
         {
+            logger.log(Level.WARNING, "An unsuccessful request to Telegram API.", e);
             e.printStackTrace();
         } 
         catch (JacksonJsonParsingException e) 
         {
+            logger.log(Level.SEVERE, "Couldn't parse model. Please take a look on models.", e);
             e.printStackTrace();
         }
         catch (Exception e)
         {
-            System.out.println("Something went wrong");
-            System.out.println(e);
+            logger.log(Level.SEVERE, "Something went wrong.", e);
         }
     }
 }

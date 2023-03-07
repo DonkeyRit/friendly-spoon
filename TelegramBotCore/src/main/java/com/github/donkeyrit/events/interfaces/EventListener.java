@@ -1,6 +1,7 @@
-package com.github.donkeyrit.events;
+package com.github.donkeyrit.events.interfaces;
 
 import com.github.donkeyrit.events.models.EventType;
+import com.github.donkeyrit.events.Event;
 
 public interface EventListener<T>
 {

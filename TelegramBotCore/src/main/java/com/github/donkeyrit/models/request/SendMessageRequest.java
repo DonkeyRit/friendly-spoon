@@ -1,16 +1,18 @@
 package com.github.donkeyrit.models.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.donkeyrit.models.message.MessageEntity;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
-
 
 /**
  * Use this method to send text messages. 
  * On success, the sent Message is returned.
  * @see <a href="https://core.telegram.org/bots/api#sendmessage">Telegram API sendMessage</a>
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record SendMessageRequest<T>(
     /**
      * Unique identifier for the target chat or username of the target channel 
@@ -32,8 +34,9 @@ public record SendMessageRequest<T>(
      * Mode for parsing entities in the message text. 
      * @see <a href="https://core.telegram.org/bots/api#formatting-options">Formatting options</a>
      */
+    //TODO: Use enums
     @JsonProperty(value = "parse_mode")
-    String parseMode,
+    Optional<String> parseMode,
     /** 
      * A JSON-serialized list of special entities that appear in message text, 
      * which can be specified instead of parse_mode
@@ -76,5 +79,22 @@ public record SendMessageRequest<T>(
     Optional<T> reply_markup
 )
 {
-    
+    public static<E> SendMessageRequest<E> of(double chatId, String text)
+    {
+        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+        String stringChatId = decimalFormat.format(chatId);
+
+        return new SendMessageRequest<E>(
+            stringChatId, 
+            null, 
+            text, 
+            Optional.of("MarkdownV2"), 
+            null, 
+            null, 
+            null, 
+            null, 
+            null, 
+            null, 
+            null);
+    }
 }
