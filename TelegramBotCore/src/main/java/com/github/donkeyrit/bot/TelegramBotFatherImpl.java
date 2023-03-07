@@ -8,10 +8,10 @@ import com.github.donkeyrit.exceptions.TelegramApiException;
 import com.github.donkeyrit.listeners.UpdateEventListener;
 import com.github.donkeyrit.models.response.User;
 
+import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 

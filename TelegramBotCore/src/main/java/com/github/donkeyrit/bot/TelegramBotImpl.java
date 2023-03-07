@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import com.google.inject.Inject;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 public class TelegramBotImpl implements TelegramBot
 {
@@ -31,20 +30,17 @@ public class TelegramBotImpl implements TelegramBot
 	private final HttpClientExecutor<String, JsonNode> httpClientExecutor;
 	private final ObjectMapper jsonObjectMapper;
 	private final QueryBuilder queryBuilder;
-	private final Logger logger;
 
 	@Inject
     public TelegramBotImpl(
 		TelegramBotConfigurationSettings configurationSettings, 
 		HttpClientExecutor<String, JsonNode> httpClientExecutor,
 		ObjectMapper jsonObjectMapper,
-		QueryBuilder queryBuilder,
-		Logger logger)
+		QueryBuilder queryBuilder)
     {
         this.configurationSettings = configurationSettings;
 		this.httpClientExecutor = httpClientExecutor;
 		this.jsonObjectMapper = jsonObjectMapper;
-		this.logger = logger;
 		this.queryBuilder = queryBuilder
 			.setBaseUrl(BASE_URL)
 			.setApiKey(this.configurationSettings.botApiKey());

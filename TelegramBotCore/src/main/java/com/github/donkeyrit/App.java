@@ -17,11 +17,11 @@ public class App
     Injector injector = Guice.createInjector(new TelegramApiBaseModules());
     
     Logger logger = injector.getInstance(Logger.class);
-    logger.severe("Start application...");
+    logger.info("Start application...");
 
     TelegramBotFather botFather = injector.getInstance(TelegramBotFather.class);
     User bot = botFather.init();
-    logger.info(() -> "Telegram Bot - " + bot);
+    logger.info(() -> "Telegram Bot - " + bot.firstName());
 
     botFather.registerUpdateEventListener(new UpdateEventListener(logger));
   }

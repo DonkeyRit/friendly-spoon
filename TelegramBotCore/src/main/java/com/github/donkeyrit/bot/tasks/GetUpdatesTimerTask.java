@@ -7,7 +7,6 @@ import com.github.donkeyrit.listeners.UpdateEventListener;
 import com.github.donkeyrit.bot.interfaces.TelegramBot;
 import com.github.donkeyrit.models.request.GetUpdatesRequest;
 import com.github.donkeyrit.models.update.Update;
-import com.github.donkeyrit.models.update.UpdateType;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,13 +34,8 @@ public class GetUpdatesTimerTask extends TimerTask
     {
         try 
         {
-            logger.log(Level.FINER, () -> "Update offset - " + (offset.isPresent() ? offset.get() : "empty"));
-            GetUpdatesRequest request = new GetUpdatesRequest(
-                offset, 
-                null, 
-                null, 
-                Optional.of(new UpdateType[] {UpdateType.MESSAGE}));
-
+            logger.log(Level.INFO, () -> "Update offset - " + (offset.isPresent() ? offset.get() : "empty"));
+            GetUpdatesRequest request = GetUpdatesRequest.of(offset);
             Update[] updates = bot.getUpdates(Optional.of(request));
             for (Update update : updates) 
             {
@@ -52,10 +46,12 @@ public class GetUpdatesTimerTask extends TimerTask
         } 
         catch (TelegramApiException e) 
         {
+            logger.log(Level.WARNING, "An unsuccessful request to Telegram API.", e);
             e.printStackTrace();
         } 
         catch (JacksonJsonParsingException e) 
         {
+            logger.log(Level.SEVERE, "Couldn't parse model. Please take a look on models.", e);
             e.printStackTrace();
         }
         catch (Exception e)

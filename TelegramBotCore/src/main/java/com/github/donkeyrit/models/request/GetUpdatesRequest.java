@@ -43,5 +43,8 @@ public record GetUpdatesRequest(
     Optional<UpdateType[]> allowedUpdates
 ) 
 {
-    
+    public static GetUpdatesRequest of(Optional<Integer> offset)
+    {
+        return new GetUpdatesRequest(offset, null, null, null);
+    }
 }

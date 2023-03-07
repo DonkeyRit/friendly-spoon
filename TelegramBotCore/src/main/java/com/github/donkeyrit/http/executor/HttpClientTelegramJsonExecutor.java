@@ -13,7 +13,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.URI;
-
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
 
@@ -44,6 +44,7 @@ public class HttpClientTelegramJsonExecutor implements HttpClientExecutor<String
             .build();
 
         HttpResponse<String> response = this.client.send(request, BodyHandlers.ofString());
+        logger.log(Level.FINEST, "Send get request by next uri - ", request.uri());
         return GetResult(response.body());
     }
 
@@ -56,6 +57,7 @@ public class HttpClientTelegramJsonExecutor implements HttpClientExecutor<String
             .build();
 
         HttpResponse<String> response = this.client.send(request, BodyHandlers.ofString());
+        logger.log(Level.FINEST, "Send post request by next uri - ", request.uri());
         return GetResult(response.body());   
     }
 
@@ -77,6 +79,7 @@ public class HttpClientTelegramJsonExecutor implements HttpClientExecutor<String
                 throw new TelegramApiException(description);
             }
     
+            logger.log(Level.FINEST, "Result output - ", json);
             return root.get(RESULT_FiELD);
         }
         catch(JsonProcessingException e) 
