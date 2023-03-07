@@ -9,12 +9,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse;
+import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.URI;
-import java.util.logging.Level;
+
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.io.IOException;
 
 public class HttpClientTelegramJsonExecutor implements HttpClientExecutor<String, JsonNode>
@@ -51,9 +54,11 @@ public class HttpClientTelegramJsonExecutor implements HttpClientExecutor<String
     @Override
     public JsonNode Post(URI uri, String json) throws TelegramApiException, IOException, InterruptedException, JacksonJsonParsingException
     {
+        BodyPublisher bodyPublisher = BodyPublishers.ofByteArray(json.getBytes(StandardCharsets.UTF_8));
         HttpRequest request = HttpRequest.newBuilder()
             .uri(uri)
-            .POST(BodyPublishers.ofString(json))
+            .header("Content-Type", "application/json")
+            .POST(bodyPublisher)
             .build();
 
         HttpResponse<String> response = this.client.send(request, BodyHandlers.ofString());

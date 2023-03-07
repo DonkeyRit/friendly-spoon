@@ -33,14 +33,16 @@ public class GetUpdatesTimerTask extends TimerTask
     @Override
     public void run() 
     {
+        //TODO: Avoid collisions when bot received a lot of updates
         try 
         {
-            logger.log(Level.INFO, () -> "Update offset - " + (offset.isPresent() ? offset.get() : "empty"));
-            GetUpdatesRequest request = GetUpdatesRequest.of(offset);
+            logger.log(Level.INFO, () -> "Update offset - " + (offset.isPresent() ? offset.get() : "null"));
+            GetUpdatesRequest request = GetUpdatesRequest.of(this.offset);
             Update[] updates = bot.getUpdates(Optional.of(request));
             for (Update update : updates) 
             {
-                offset = Optional.of(update.updateId());
+                logger.log(Level.INFO, () -> "Update id - " + update.updateId());
+                offset = Optional.of(update.updateId() + 1);
                 UpdateReceivedEvent updateReceivedEvent = new UpdateReceivedEvent(update);
                 listeners.forEach(listener -> listener.handleEvent(updateReceivedEvent));
             }
