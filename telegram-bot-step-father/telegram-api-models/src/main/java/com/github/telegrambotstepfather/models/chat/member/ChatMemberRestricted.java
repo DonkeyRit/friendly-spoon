@@ -1,6 +1,6 @@
 package com.github.telegrambotstepfather.models.chat.member;
 
-import com.github.utils.Deserializers.UnixTimestampDeserializer;
+import com.github.telegrambotstepfather.utils.Deserializers.UnixTimestampDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

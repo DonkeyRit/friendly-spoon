@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.telegrambotstepfather.models.chat.Chat;
 import com.github.telegrambotstepfather.models.chat.ChatInviteLink;
 import com.github.telegrambotstepfather.models.response.User;
-import com.github.utils.Deserializers.UnixTimestampDeserializer;
+import com.github.telegrambotstepfather.utils.Deserializers.UnixTimestampDeserializer;
 
 import java.util.Optional;
 import java.time.Instant;

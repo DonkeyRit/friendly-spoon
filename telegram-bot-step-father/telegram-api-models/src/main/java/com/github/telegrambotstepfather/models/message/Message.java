@@ -1,6 +1,6 @@
 package com.github.telegrambotstepfather.models.message;
 
-import com.github.utils.Deserializers.UnixTimestampOptionalInstantDeserializer;
+import com.github.telegrambotstepfather.utils.Deserializers.UnixTimestampOptionalInstantDeserializer;
 import com.github.telegrambotstepfather.models.chat.Chat;
 import com.github.telegrambotstepfather.models.game.Game;
 import com.github.telegrambotstepfather.models.response.Animation;
@@ -18,7 +18,7 @@ import com.github.telegrambotstepfather.models.response.Venue;
 import com.github.telegrambotstepfather.models.response.Video;
 import com.github.telegrambotstepfather.models.response.VideoNote;
 import com.github.telegrambotstepfather.models.response.Voice;
-import com.github.utils.Deserializers.UnixTimestampDeserializer;
+import com.github.telegrambotstepfather.utils.Deserializers.UnixTimestampDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
