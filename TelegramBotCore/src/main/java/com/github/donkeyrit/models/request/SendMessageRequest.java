@@ -1,5 +1,6 @@
 package com.github.donkeyrit.models.request;
 
+import com.github.donkeyrit.models.request.enums.ParseMode;
 import com.github.donkeyrit.models.message.MessageEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,9 +35,8 @@ public record SendMessageRequest<T>(
      * Mode for parsing entities in the message text. 
      * @see <a href="https://core.telegram.org/bots/api#formatting-options">Formatting options</a>
      */
-    //TODO: Use enums
     @JsonProperty(value = "parse_mode")
-    Optional<String> parseMode,
+    Optional<ParseMode> parseMode,
     /** 
      * A JSON-serialized list of special entities that appear in message text, 
      * which can be specified instead of parse_mode
@@ -88,7 +88,7 @@ public record SendMessageRequest<T>(
             stringChatId, 
             null, 
             text, 
-            Optional.of("MarkdownV2"), 
+            Optional.of(ParseMode.MarkdownV2), 
             null, 
             null, 
             null, 
