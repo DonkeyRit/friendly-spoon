@@ -35,7 +35,6 @@ public record Venue(
     /**
      * Google Places type of the venue. (See supported types.)
      */
-    //TODO: Use enums
     Optional<String> googlePlaceType
 ) 
 {
