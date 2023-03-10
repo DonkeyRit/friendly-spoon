@@ -37,7 +37,7 @@
                     <source>19</source>
                     <target>19</target>
                     <includes>
-                        <include>com/github/telegrambotstepfather/http/**</include>
+                        <include>com/github/amazonnotifier/**</include>
                     </includes>
                 </configuration>
             </plugin>
