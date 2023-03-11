@@ -5,15 +5,16 @@ import com.github.telegrambotstepfather.configurations.models.TelegramBotConfigu
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public final class ConfigurationManager 
 {
-    public static TelegramBotConfigurationSettings GetTelegramBotConfiguration()
+    public static TelegramBotConfigurationSettings getTelegramBotConfiguration()
     {
         try {
             String configFilePath = ConfigurationFile.TELEGRAM_BOTS_CONFIGURATION_FILE.relativeFilePath;
-            Properties prop = GetProperties(configFilePath);
+            Properties prop = loadConfig(configFilePath);
             return new TelegramBotConfigurationSettings(prop.getProperty("BOT_TOKEN"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -25,11 +26,14 @@ public final class ConfigurationManager
     }
 
 
-    public static Properties GetProperties(String configFilePath) throws IOException
+    public static Properties loadConfig(String configFilePath) throws IOException
     {
-        FileInputStream propsInput = new FileInputStream(configFilePath);
-        Properties prop = new Properties();
-        prop.load(propsInput);
-        return prop;   
+        Properties props = new Properties();
+        InputStream inputStream = ConfigurationManager.class
+            .getClassLoader()
+            .getResourceAsStream(configFilePath);
+        props.load(inputStream);
+
+        return props;   
     }
 }

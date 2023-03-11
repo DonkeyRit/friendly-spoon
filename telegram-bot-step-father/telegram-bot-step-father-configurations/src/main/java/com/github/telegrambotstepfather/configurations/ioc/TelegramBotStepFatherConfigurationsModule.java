@@ -10,6 +10,6 @@ public class TelegramBotStepFatherConfigurationsModule extends AbstractModule
     @Provides
     public TelegramBotConfigurationSettings provideConfig() 
     { 
-        return ConfigurationManager.GetTelegramBotConfiguration();
+        return ConfigurationManager.getTelegramBotConfiguration();
     }
 }
