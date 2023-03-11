@@ -6,11 +6,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch App",
+            "name": "App",
             "request": "launch",
-            "mainClass": "com.github.donkeyrit.App",
-            "projectName": "",
-            "vmArgs": "-Djava.util.logging.config.file=/Users/dimaalekseev/Reps/friendly-spoon/TelegramBotCore/src/resources/logging.properties"
+            "mainClass": "com.github.amazonnotifier.App",
+            "projectName": "Notifier",
+            //"vmArgs": "-Djava.util.logging.config.file=/Users/dimaalekseev/Reps/friendly-spoon/TelegramBotCore/src/resources/logging.properties"
         },
         {
             "type": "java",
