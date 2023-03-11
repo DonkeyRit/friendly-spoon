@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 public class AmazonScrapper 
 {
 
-    public void parse(String url) throws IOException
+    public String parse(String url) throws IOException
     {
         // Set up the request headers and cookies
         Connection connection = Jsoup.connect(url)
@@ -31,10 +31,11 @@ public class AmazonScrapper
         Element deliveryMessage = doc.selectFirst("#deliveryBlockMessage");
         if(deliveryMessage != null)
         {
-            String deliveryDate = deliveryMessage
+            return deliveryMessage
                 .text()
                 .trim();
-            System.out.println(deliveryDate);
         }
+
+        return null;
     }
 }
