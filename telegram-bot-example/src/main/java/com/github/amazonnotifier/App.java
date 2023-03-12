@@ -8,7 +8,6 @@ import com.github.telegrambotstepfather.ioc.Providers.ServiceProvider;
 import com.github.telegrambotstepfather.models.response.User;
 import com.github.amazonnotifier.handlers.UpdateEventListener;
 import com.github.amazonnotifier.site.AmazonScrapper;
-
 import com.google.inject.Injector;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -16,12 +15,12 @@ import java.io.InputStream;
 
 public class App {
 
-    public static void main(String[] args) throws IOException, TelegramApiException, JacksonJsonParsingException {
-        // String url =
-        // "https://www.amazon.com/gp/product/B0BBHD5D8Y/ref=ox_sc_saved_title_1?smid=ATVPDKIKX0DER&psc=1";
+    public static void main(String[] args) throws IOException, TelegramApiException, JacksonJsonParsingException, InterruptedException {
+        String url =
+        "https://www.amazon.com/gp/product/B0BBHD5D8Y/ref=ox_sc_saved_title_1?smid=ATVPDKIKX0DER&psc=1";
 
-        // AmazonScrapper scrapper = new AmazonScrapper();
-        // scrapper.parse(url);
+        AmazonScrapper scrapper = new AmazonScrapper();
+        scrapper.parse(url, "");
 
         try {
             Injector injector = ServiceProvider.buildServiceProvider();

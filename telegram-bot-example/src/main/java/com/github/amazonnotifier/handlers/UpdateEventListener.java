@@ -44,7 +44,7 @@ public class UpdateEventListener implements EventListener<Update>
             try
             {
                 AmazonScrapper scrapper = new AmazonScrapper();
-                String deliveryDate = scrapper.parse(messageText);
+                String deliveryDate = scrapper.parse(messageText, "");
                 SendMessagBack(receivedMessage, deliveryDate);
             }
             catch(Exception ex)
