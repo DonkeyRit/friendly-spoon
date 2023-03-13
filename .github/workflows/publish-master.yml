@@ -29,6 +29,6 @@ jobs:
         run: mvn -B package -f telegram-bot-step-father/pom.xml
 
       - name: Publish to GitHub Packages
-        run: mvn --file telegram-bot-step-father/pom.xml --batch-mode -DuseGitHubPackages=true deploy
+        run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
