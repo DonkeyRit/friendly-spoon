@@ -28,19 +28,10 @@
 
     <distributionManagement>
         <repository>
-          <id>github</id>
-          <name>GitHub Packages</name>
-          <url>https://maven.pkg.github.com/DonkeyRit/friendly-spoon</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-          </snapshots>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/DonkeyRit/friendly-spoon</url>
         </repository>
-      </distributionManagement>
+    </distributionManagement>
 </project>
   
