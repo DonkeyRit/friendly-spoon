@@ -1,48 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.telegrambotstepfather</groupId>
-    <artifactId>TelegramBotStepFatherRoot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+  <groupId>com.github.telegrambotstepfather</groupId>
+  <artifactId>TelegramBotStepFatherRoot</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
-    <modules>
-        <module>telegram-bot-step-father-configurations</module>
-        <module>telegram-bot-step-father-exceptions</module>
-        <module>telegram-bot-step-father-utils</module>
-        <module>telegram-api-models</module>
-        <module>telegram-api-http</module>
-        <module>telegram-bot-step-father</module>
-    </modules>
+  <modules>
+    <module>telegram-bot-step-father-configurations</module>
+    <module>telegram-bot-step-father-exceptions</module>
+    <module>telegram-bot-step-father-utils</module>
+    <module>telegram-api-models</module>
+    <module>telegram-api-http</module>
+    <module>telegram-bot-step-father</module>
+  </modules>
 
+  <properties>
+    <JACKSON.VERSION>2.14.1</JACKSON.VERSION>
+    <GUICE.VERSION>5.0.1</GUICE.VERSION>
+    <COMPILER.INCLUDE>com/github/telegrambotstepfather/**</COMPILER.INCLUDE>
+  </properties>
+
+  <dependencyManagement>
     <dependencies>
-        <!-- Common dependencies for all components -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${JACKSON.VERSION}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jdk8</artifactId>
+        <version>${JACKSON.VERSION}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.inject</groupId>
+        <artifactId>guice</artifactId>
+        <version>${GUICE.VERSION}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>TelegramApiHttp</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>TelegramApiModels</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>TelegramBotStepFather</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>TelegramBotStepFatherConfigurations</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>TelegramBotStepFatherExceptions</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>TelegramBotStepFatherUtils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
+  </dependencyManagement>
 
-    <build>
-        <!-- Common build configuration for all components -->
-    </build>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/DonkeyRit/friendly-spoon</url>
+    </repository>
+  </distributionManagement>
 
-    <profiles>
-        <profile>
-          <id>github</id>
-          <activation>
-            <property>
-              <name>useGitHubPackages</name>
-              <value>true</value>
-            </property>
-          </activation>
-          <distributionManagement>
-            <repository>
-              <id>github</id>
-              <name>GitHub Packages</name>
-              <url>https://maven.pkg.github.com/DonkeyRit/friendly-spoon</url>
-            </repository>
-          </distributionManagement>
-        </profile>
-      </profiles>
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>19</source>
+          <target>19</target>
+          <includes>
+            <include>${COMPILER.INCLUDE}</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
   
