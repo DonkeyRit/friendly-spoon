@@ -9,6 +9,10 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checks out repository
         uses: actions/checkout@v3
@@ -20,8 +24,13 @@ jobs:
           distribution: 'temurin'
           java-package: 'jdk'
           cache: 'maven'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-      - name: Publish to Github Packages
-        run: mvn deploy -f telegram-bot-step-father/pom.xml -DskipTests=true
+      - name: Build with Maven
+        run: mvn -B package -f telegram-bot-step-father/pom.xml
+
+      - name: Publish to GitHub Packages
+        run: mvn deploy -f telegram-bot-step-father/pom.xml -s $GITHUB_WORKSPACE/settings.xml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
