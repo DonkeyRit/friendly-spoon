@@ -7,12 +7,10 @@ import com.github.telegrambotstepfather.exceptions.TelegramApiException;
 import com.github.telegrambotstepfather.ioc.Providers.ServiceProvider;
 import com.github.telegrambotstepfather.models.response.User;
 import com.github.amazonnotifier.handlers.UpdateEventListener;
-import com.github.amazonnotifier.site.AmazonScrapper;
 
 import com.google.inject.Injector;
 import java.util.logging.Logger;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class App {
 
@@ -25,10 +23,6 @@ public class App {
 
         try {
             Injector injector = ServiceProvider.buildServiceProvider();
-
-            InputStream inputStream = App.class
-            .getClassLoader()
-            .getResourceAsStream("config.properties");
 
             Logger logger = injector.getInstance(Logger.class);
             logger.info("Start application...");
