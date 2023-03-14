@@ -3,9 +3,8 @@ package com.github.telegrambotstepfather.configurations;
 import com.github.telegrambotstepfather.configurations.models.TelegramBotConfigurationSettings;
 
 import java.io.FileNotFoundException;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 public final class ConfigurationManager 
