@@ -1,5 +1,5 @@
 name: publish-master
-run-name: Pull-request '${{ github.head_ref }}' was merged in master
+run-name: Pull-request '${{ github.event.pull_request.head.ref }}' was merged in master
 
 on:
   push:
