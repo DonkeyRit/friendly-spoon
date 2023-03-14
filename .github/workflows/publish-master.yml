@@ -4,7 +4,7 @@ run-name: Pull-request '${{ github.head_ref }}' was merged in master
 on:
   push:
     branches:
-      - TEOTB-14-dev-ops-configure-github-actions-to-publish-package
+      - kenny
 
 jobs:
   publish:
