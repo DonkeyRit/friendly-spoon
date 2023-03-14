@@ -2,7 +2,7 @@ package com.github.telegrambotstepfather.ioc.Providers;
 
 import com.github.telegrambotstepfather.configurations.ioc.TelegramBotStepFatherConfigurationsModule;
 import com.github.telegrambotstepfather.ioc.TelegramBotStepFatherModule;
-import com.github.telegrambotstepfather.http.ioc.TelegramApiHttpModule;
+import com.github.telegrambotstepfather.http.ioc.telegram-api-httpModule;
 
 import com.google.inject.Injector;
 import com.google.inject.Guice;
@@ -13,7 +13,7 @@ public class ServiceProvider
     {
         com.google.inject.Module[] modules = new com.google.inject.Module[]
         {
-            new TelegramApiHttpModule(),
+            new telegram-api-httpModule(),
             new TelegramBotStepFatherConfigurationsModule(),
             new TelegramBotStepFatherModule()
         };

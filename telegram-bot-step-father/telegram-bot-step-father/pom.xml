@@ -6,28 +6,28 @@
 
     <parent>
         <groupId>com.github.telegrambotstepfather</groupId>
-        <artifactId>TelegramBotStepFatherRoot</artifactId>
+        <artifactId>telegram-bot-step-father-root</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>TelegramBotStepFather</artifactId>
+    <artifactId>telegram-bot-step-father</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>TelegramApiModels</artifactId>
+            <artifactId>telegram-api-models</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>TelegramBotStepFatherExceptions</artifactId>
+            <artifactId>telegram-bot-step-father-exceptions</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>TelegramApiHttp</artifactId>
+            <artifactId>telegram-api-http</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>TelegramBotStepFatherConfigurations</artifactId>
+            <artifactId>telegram-bot-step-father-configurations</artifactId>
         </dependency>
 
         <dependency>
