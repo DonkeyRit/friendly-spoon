@@ -1,5 +1,5 @@
 name: publish-master
-run-name: Pull-request '${{ github.event.pull_request.head.ref }}' was merged in master
+run-name: Pull-request '${{ github.ref }}' was merged in master
 
 on:
   push:
@@ -32,3 +32,13 @@ jobs:
         run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Delete Branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
+
+      - name: Remove snapshot versions
+        run: mvn --file telegram-bot-step-father/pom.xml versions:remove-snapshots
