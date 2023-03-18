@@ -4,7 +4,7 @@ run-name: Pull-request '${{ github.ref }}' was merged in master
 on:
   push:
     branches:
-      - TEOTB-16-dev-tech-debt-2
+      - kenny
 
 jobs:
   publish:
@@ -49,19 +49,19 @@ jobs:
       - name: Update patch version
         run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=${{ steps.get-new-full-version.outputs.NEW_PROJECT_VERSION }}-SNAPSHOT -DgenerateBackupPoms=false -DupdateChildModules=true
 
-      #- name: Commit changes to master
-      #  uses: actions-js/push@master
-      #  with:
-      #    github_token: ${{ github.token }}
+      - name: Commit changes to master
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ github.token }}
 
-      #- name: Publish to GitHub Packages
-      #  run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
-      #  env:
-      #    GITHUB_TOKEN: ${{ github.token }}
+      - name: Publish to GitHub Packages
+        run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
-      #- name: Delete Branch
-      #  uses: ad-m/github-push-action@master
-      #  with:
-      #    github_token: ${{ github.token }}
-      #    branch: ${{ github.ref }}
-      #    force: true
+      - name: Delete Branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ github.token }}
+          branch: ${{ github.ref }}
+          force: true
