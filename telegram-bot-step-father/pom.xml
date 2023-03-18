@@ -22,6 +22,11 @@
     <JACKSON.VERSION>2.14.1</JACKSON.VERSION>
     <GUICE.VERSION>5.0.1</GUICE.VERSION>
     <COMPILER.INCLUDE>com/github/telegrambotstepfather/**</COMPILER.INCLUDE>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.major.version>0</project.major.version>
+    <project.minor.version>0</project.minor.version>
+    <project.patch.version>1</project.patch.version>
   </properties>
 
   <dependencyManagement>
@@ -85,6 +90,7 @@
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
+    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
