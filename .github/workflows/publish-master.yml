@@ -28,8 +28,14 @@ jobs:
       - name: Build with Maven
         run: mvn -B package -f telegram-bot-step-father/pom.xml
 
+      - name: Get current version
+        id: get-version
+        run: |
+          PROJECT.VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "::set-env name=PROJECT.VERSION::$PROJECT.VERSION"
+
       - name: Update patch version
-        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=${project.version.nextIncrement} -DgenerateBackupPoms=false -DupdateChildModules=true
+        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=$PROJECT.VERSION -DgenerateBackupPoms=false -DupdateChildModules=true
 
       - name: Commit changes to master
         uses: actions-js/push@master
@@ -41,9 +47,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Delete Branch
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ github.token }}
-          branch: ${{ github.ref }}
-          force: true
+      #- name: Delete Branch
+      #  uses: ad-m/github-push-action@master
+      #  with:
+      #    github_token: ${{ github.token }}
+      #    branch: ${{ github.ref }}
+      #    force: true
