@@ -28,13 +28,26 @@ jobs:
       - name: Build with Maven
         run: mvn -B package -f telegram-bot-step-father/pom.xml
 
-      - name: Get current version
-        id: get-current-version
+      - name: Get current full version
+        id: get-current-full-version
         run: |
-          echo "PROJECT_VERSION=$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+          echo "PROJECT_MAJOR_VERSION=$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.major.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+          echo "PROJECT_MINOR_VERSION=$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.minor.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+          echo "PROJECT_PATCH_VERSION=$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.patch.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+
+      - name: Increment patch version
+        id: increment-patch-version
+        run: echo "NEW_PROJECT_PATCH_VERSION=$((${{ steps.get-current-full-version.outputs.PROJECT_PATCH_VERSION }} + 1))" >> $GITHUB_OUTPUT
+
+      - name: Update patch version in pom
+        run: mvn versions:set-property -Dproperty=project.patch.version -DnewVersion=${{ steps.increment-patch-version.outputs.NEW_PROJECT_PATCH_VERSION }} -DupdatePomFile=true -DgenerateBackupPoms=false -f telegram-bot-step-father/pom.xml
+
+      - name: Generate new full version
+        id: get-new-full-version
+        run: echo "NEW_PROJECT_VERSION=${{ steps.get-current-full-version.outputs.PROJECT_MAJOR_VERSION }}.${{ steps.get-current-full-version.outputs.PROJECT_MINOR_VERSION }}.${{ steps.increment-patch-version.outputs.NEW_PROJECT_PATCH_VERSION }}" >> $GITHUB_OUTPUT
 
       - name: Update patch version
-        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=${{ steps.get-current-version.outputs.PROJECT_VERSION }} -DgenerateBackupPoms=false -DupdateChildModules=true
+        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=${{ steps.get-new-full-version.outputs.NEW_PROJECT_VERSION }}-SNAPSHOT -DgenerateBackupPoms=false -DupdateChildModules=true
 
       #- name: Commit changes to master
       #  uses: actions-js/push@master

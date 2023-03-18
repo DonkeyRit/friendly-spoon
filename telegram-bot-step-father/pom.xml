@@ -24,6 +24,9 @@
     <COMPILER.INCLUDE>com/github/telegrambotstepfather/**</COMPILER.INCLUDE>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.major.version>0</project.major.version>
+    <project.minor.version>0</project.minor.version>
+    <project.patch.version>1</project.patch.version>
   </properties>
 
   <dependencyManagement>
