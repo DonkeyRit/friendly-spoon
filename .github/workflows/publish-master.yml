@@ -29,21 +29,22 @@ jobs:
         run: mvn -B package -f telegram-bot-step-father/pom.xml
 
       - name: Get current version
+        id: get-current-version
         run: |
-          echo "::set-output name=VERSION::$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.version -q -DforceStdout)"
+          echo "PROJECT_VERSION=$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
 
       - name: Update patch version
-        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=$VERSION -DgenerateBackupPoms=false -DupdateChildModules=true
+        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=${{ steps.get-current-version.outputs.PROJECT_VERSION }} -DgenerateBackupPoms=false -DupdateChildModules=true
 
-      - name: Commit changes to master
-        uses: actions-js/push@master
-        with:
-          github_token: ${{ github.token }}
+      #- name: Commit changes to master
+      #  uses: actions-js/push@master
+      #  with:
+      #    github_token: ${{ github.token }}
 
-      - name: Publish to GitHub Packages
-        run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      #- name: Publish to GitHub Packages
+      #  run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
+      #  env:
+      #    GITHUB_TOKEN: ${{ github.token }}
 
       #- name: Delete Branch
       #  uses: ad-m/github-push-action@master
