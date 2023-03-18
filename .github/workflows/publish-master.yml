@@ -29,10 +29,8 @@ jobs:
         run: mvn -B package -f telegram-bot-step-father/pom.xml
 
       - name: Get current version
-        id: get-version
         run: |
-          PROJECT.VERSION=$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.version -q -DforceStdout)
-          echo "::set-env name=PROJECT.VERSION::$PROJECT.VERSION"
+          echo "::set-output name=VERSION::$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.version -q -DforceStdout)"
 
       - name: Update patch version
         run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=$PROJECT.VERSION -DgenerateBackupPoms=false -DupdateChildModules=true
