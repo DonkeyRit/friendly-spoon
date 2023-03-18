@@ -33,7 +33,7 @@ jobs:
           echo "::set-output name=VERSION::$(mvn help:evaluate -f telegram-bot-step-father/pom.xml -Dexpression=project.version -q -DforceStdout)"
 
       - name: Update patch version
-        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=$PROJECT.VERSION -DgenerateBackupPoms=false -DupdateChildModules=true
+        run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=$VERSION -DgenerateBackupPoms=false -DupdateChildModules=true
 
       - name: Commit changes to master
         uses: actions-js/push@master
