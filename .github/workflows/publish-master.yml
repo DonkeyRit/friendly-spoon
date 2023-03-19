@@ -53,8 +53,8 @@ jobs:
         run: mvn versions:set -f telegram-bot-step-father/pom.xml -DnewVersion=${{ steps.get-new-full-version.outputs.NEW_PROJECT_VERSION }}-SNAPSHOT -DgenerateBackupPoms=false -DupdateChildModules=true
 
       - name: Push changes to master
-         uses: actions-js/push@master
-         with:
+        uses: actions-js/push@master
+        with:
            github_token: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
 
 
