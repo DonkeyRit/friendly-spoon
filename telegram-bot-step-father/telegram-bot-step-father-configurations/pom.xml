@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.github.telegrambotstepfather</groupId>
         <artifactId>telegram-bot-step-father-root</artifactId>
-        <version>0.0.18-SNAPSHOT</version>
+        <version>0.0.19-SNAPSHOT</version>
     </parent>
     <artifactId>telegram-bot-step-father-configurations</artifactId>
     <packaging>jar</packaging>
