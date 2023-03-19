@@ -56,12 +56,7 @@ jobs:
         uses: actions-js/push@master
         with:
            github_token: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
-
-
-      #- name: Push changes to master
-      #  uses: ad-m/github-push-action@master
-      #  with:
-      #    github_token: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
+           branch: kenny
 
       - name: Publish to GitHub Packages
         run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
