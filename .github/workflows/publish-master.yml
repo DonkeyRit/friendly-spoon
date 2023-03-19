@@ -59,9 +59,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Delete Branch
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ github.token }}
-          branch: ${{ github.ref }}
-          force: true
+      #- name: Delete Branch
+      #  uses: ad-m/github-push-action@master
+      #  with:
+      #    github_token: ${{ github.token }}
+      #    branch: ${{ github.ref }}
+      #    force: true
