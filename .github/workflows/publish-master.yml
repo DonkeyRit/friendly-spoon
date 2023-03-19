@@ -61,10 +61,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
 
-      - name: Delete Branch
-        run: echo ${{ github.event.pull_request.head.ref }}
-      #  uses: ad-m/github-push-action@master
-      #  with:
-      #    github_token: ${{ github.token }}
-      #    branch: ${{ github.ref }}
-      #    force: true
+      - name: Delete Merged Branch
+        uses: rtCamp/action-delete-branch@v2.1
+        with:
+          github_token: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
+          branch: ${{ github.event.pull_request.head.ref }}
