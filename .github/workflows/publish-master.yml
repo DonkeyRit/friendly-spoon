@@ -52,12 +52,12 @@ jobs:
       - name: Commit changes to master
         uses: actions-js/push@master
         with:
-          github_token: ${{ github.token }}
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN_FOR_DEPLOY }}
 
       - name: Publish to GitHub Packages
         run: mvn --file telegram-bot-step-father/pom.xml --batch-mode deploy
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_FOR_DEPLOY }}
 
       #- name: Delete Branch
       #  uses: ad-m/github-push-action@master
