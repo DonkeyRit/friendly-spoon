@@ -62,7 +62,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
 
       - name: Delete Merged Branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
-        run: |
-          git push origin --delete ${{ github.event.pull_request.head.ref }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const github = require('@actions/github');
+
+            const octokit = new github.GitHub('${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}');
+
+            octokit.git.deleteRef({
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              ref: '${{ github.event.pull_request.head.ref }}'
+            });
