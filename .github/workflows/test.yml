@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Remove old snaphost packages
-      - uses: actions/delete-package-versions@v4
+        uses: actions/delete-package-versions@v4
         with:
           package-name: com.github.telegrambotstepfather.telegram-bot-step-father-root
           package-type: maven
