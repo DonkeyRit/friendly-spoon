@@ -2,11 +2,10 @@ name: publish-master
 run-name: Pull-request '${{ github.event.pull_request.head.ref }}' was merged in master
 
 on:
-  on:
   push:
     branches:
       - 'TEOTB-22-dev-ops-delete-snapshots-versions'
-
+jobs:
  remove-stale-snapshots-packages:
     runs-on: ubuntu-latest
     steps:
