@@ -1,0 +1,20 @@
+name: publish-master
+run-name: Pull-request '${{ github.event.pull_request.head.ref }}' was merged in master
+
+on:
+  on:
+  push:
+    branches:
+      - 'TEOTB-22-dev-ops-delete-snapshots-versions'
+
+ remove-stale-snapshots-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove old snaphost packages
+      - uses: actions/delete-package-versions@v4
+        with:
+          package-name: com.github.telegrambotstepfather.telegram-bot-step-father-root
+          package-type: maven
+          min-versions-to-keep: 1
+          delete-only-pre-release-versions: true
+          token: ${{ secrets.PERSONAL_ACESS_TOKEN_DEPLOY }}
