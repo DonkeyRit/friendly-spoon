@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum MessageEntityType 
 {
-
     MENTION,
     HASHTAG,
     CASHTAG,
