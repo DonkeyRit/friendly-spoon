@@ -21,6 +21,8 @@
   <properties>
     <JACKSON.VERSION>2.14.1</JACKSON.VERSION>
     <GUICE.VERSION>5.0.1</GUICE.VERSION>
+    <JUNIT.VERSION>4.13.2</JUNIT.VERSION>
+    <MOCKITON.VERSION>5.2.0</MOCKITON.VERSION>
     <COMPILER.INCLUDE>com/github/telegrambotstepfather/**</COMPILER.INCLUDE>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,6 +47,18 @@
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
         <version>${GUICE.VERSION}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${JUNIT.VERSION}</version>
+        <scope>test</scope>
+      </dependency>    
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${MOCKITON.VERSION}</version>
+        <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -90,6 +104,14 @@
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </testResource>
+    </testResources>
     
     <plugins>
       <plugin>
