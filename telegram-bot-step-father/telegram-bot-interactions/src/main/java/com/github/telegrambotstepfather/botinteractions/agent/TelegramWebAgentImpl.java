@@ -1,24 +1,20 @@
 package com.github.telegrambotstepfather.botinteractions.agent;
 
+import com.github.telegrambotstepfather.botinteractions.persistance.BrowserCookieCache;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.logger.Logger;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.playwright.options.Cookie;
 import com.microsoft.playwright.*;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TelegramWebAgentImpl implements TelegramWebAgent {
 
+    private final BrowserCookieCache browserCookieCache;
     private final Logger logger;
     private final Cache cache;
     private final Playwright playwright;
@@ -27,8 +23,9 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     private Browser browser;
     private Page page;
 
-    public TelegramWebAgentImpl(Logger logger, Cache cache) {
+    public TelegramWebAgentImpl(Logger logger, BrowserCookieCache browserCookieCache, Cache cache) {
         this.playwright = Playwright.create();
+        this.browserCookieCache = browserCookieCache;
         this.logger = logger;
         this.cache = cache;
     }
@@ -49,6 +46,11 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     }
 
     @Override
+    public boolean isAlreadyLogin() {
+       return browserCookieCache.tryRetrieve(context);
+    }
+
+    @Override
     public byte[] getLoginQrCode() {
         return page.screenshot();
     }
@@ -65,17 +67,12 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         String loginByPhoneButtonSelector = "div.input-wrapper > button";
         String loginByPhoneButtonFromQrCodeSelector = "div.auth-form > button";
 
-        try {
-            logger.info("Try to switch authentication method to phone authentication.");
-            ElementHandle loginByPhoneWrappedButton = page.waitForSelector(loginByPhoneButtonSelector);
-            ElementHandle logingByPhoneAuthFormButton = page.waitForSelector(loginByPhoneButtonFromQrCodeSelector);
+        logger.info("Try to switch authentication method to phone authentication.");
+        Optional<ElementHandle> loginByPhoneWrappedButton = waitForSelector(loginByPhoneButtonSelector, false);
+        Optional<ElementHandle> logingByPhoneAuthFormButton = waitForSelector(loginByPhoneButtonFromQrCodeSelector, false);
             
-            loginByPhoneWrappedButton.click();
-            logingByPhoneAuthFormButton.click();
-
-        } catch (Exception exception) {
-            logger.error("Couldn't find any buttons to switch authentication.", exception);
-        }
+        loginByPhoneWrappedButton.ifPresent(e -> e.click());
+        logingByPhoneAuthFormButton.ifPresent(e -> e.click());
     }
 
     @Override
@@ -87,18 +84,33 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         String phoneNumberInputFieldSelector = "div.input-field.input-field-select > div.input-field-input";
         String nextButtonSelector = "button:not(.btn-secondary)";
 
+        String phoneNumberRegionInputFieldAlternativeSelector = "input#sign-in-phone-code";
+        String phoneNumberInputFieldAlternativeSelector = "input#sign-in-phone-number";
+        String nextButtonAlternativeSelector = "div.input-wrapper > buttom.btn-primary";
+
         // Find and interact with the phone input field
-        page.fill(phoneNumberRegionInputFieldselector, phoneNumber); // Replace with your phone number
-        page.type(phoneNumberInputFieldSelector,phoneNumber); // Replace with your phone number
+
+        Optional<ElementHandle> phoneNumbeRegionElement = waitForSelector(phoneNumberRegionInputFieldselector, false);
+        Optional<ElementHandle> phoneNumbeRegionAlternativeElement = waitForSelector(phoneNumberRegionInputFieldAlternativeSelector, false);
+        phoneNumbeRegionElement.ifPresent(e -> e.fill(phoneNumber));
+        phoneNumbeRegionAlternativeElement.ifPresent(e -> e.fill(phoneNumber));
+        
+        Optional<ElementHandle> phoneNumberElement = waitForSelector(phoneNumberInputFieldSelector, false);
+        Optional<ElementHandle> phoneNumberAlternativeElement = waitForSelector(phoneNumberInputFieldAlternativeSelector, false);
+        phoneNumberElement.ifPresent(e -> e.type(phoneNumber));
+        phoneNumberAlternativeElement.ifPresent(e -> e.type(phoneNumber));
 
         // Click the "Next" button
-        page.click(nextButtonSelector);
+        Optional<ElementHandle> nextButtonElement = waitForSelector(nextButtonSelector, false);
+        Optional<ElementHandle> nextButtonAlternativeElement = waitForSelector(nextButtonAlternativeSelector, false);
+        nextButtonElement.ifPresent(e -> e.click());
+        nextButtonAlternativeElement.ifPresent(e -> e.click());
     }
 
     @Override
     public void enterVerificationCode(String verificationCode) {
 
-        String verificationCodeInputSelector = ".input-wrapper > .input-field > input";
+        String verificationCodeInputSelector = "div.input-field > input";
 
         // Wait for the code input field to appear (simulate verification step)
         page.waitForSelector(verificationCodeInputSelector);
@@ -108,8 +120,7 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
 
         // Wait for successful authentication (replace with appropriate selector)
         page.waitForSelector("#page-chats");
-        List<Cookie> cookies = context.cookies();
-        saveCookiesToFile(cookies);
+        browserCookieCache.save(context);
     }
 
     @Override
@@ -200,50 +211,25 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         return false;
     }
 
-    public static void saveCookiesToFile(List<Cookie> cookies) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String cookiesJson;
+    //#region Utils
 
-        try {
-            // Convert cookies to JSON format
-            cookiesJson = objectMapper.writeValueAsString(cookies);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return;
+    
+    private Optional<ElementHandle> waitForSelector(String selector, boolean isRequired) throws PlaywrightException
+    {
+        try{
+            ElementHandle elementHandle = page.waitForSelector(selector);
+            return Optional.of(elementHandle);
+
+        }catch(PlaywrightException ex)
+        {
+            if(isRequired)
+            {
+                throw ex;
+            }
         }
 
-        // Define the path to the file where cookies will be saved
-        Path filePath = Path.of("cookies.json");
-
-        try {
-            // Write cookies JSON to the file
-            Files.write(filePath, cookiesJson.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return Optional.empty();
     }
 
-    public static List<Cookie> loadCookiesFromFile() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String cookiesJson;
-
-        // Define the path to the file where cookies are saved
-        Path filePath = Path.of("cookies.json");
-
-        try {
-            // Read the cookies JSON from the file
-            cookiesJson = Files.readString(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        try {
-            // Convert JSON to a list of cookies
-            return objectMapper.readValue(cookiesJson, new TypeReference<List<Cookie>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    //#endregion Utils
 }

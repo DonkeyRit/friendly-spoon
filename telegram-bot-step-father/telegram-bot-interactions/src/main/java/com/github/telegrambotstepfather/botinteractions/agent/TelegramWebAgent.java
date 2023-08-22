@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface TelegramWebAgent extends AutoCloseable {
 
+    boolean isAlreadyLogin();
     void init();
     byte[] getLoginQrCode();
     void switchToLoginByPhone();
