@@ -1,11 +1,14 @@
 package com.github.telegrambotstepfather.botinteractions.persistance;
 
 import com.github.telegrambotstepfather.botinteractions.json.SimpleJsonFile;
+import com.github.telegrambotstepfather.botinteractions.json.deserializers.CookieDeserializer;
+import com.github.telegrambotstepfather.botinteractions.json.deserializers.ManualJsonDeserializer;
 import com.github.telegrambotstepfather.botinteractions.json.JsonFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.options.Cookie;
 import java.util.List;
+import java.util.Optional;
 
 public class BrowserCookieCache {
 
@@ -23,8 +26,9 @@ public class BrowserCookieCache {
 
     public boolean tryRetrieve(BrowserContext context){
 
+        Optional<ManualJsonDeserializer<List<Cookie>>> deserializer = Optional.of(new CookieDeserializer());
         TypeReference<List<Cookie>> type = new TypeReference<List<Cookie>>() {};
-        List<Cookie> cachedCookies = cacheFile.read(type);
+        List<Cookie> cachedCookies = cacheFile.read(type, deserializer);
 
         if(cachedCookies == null || cachedCookies.isEmpty())
         {

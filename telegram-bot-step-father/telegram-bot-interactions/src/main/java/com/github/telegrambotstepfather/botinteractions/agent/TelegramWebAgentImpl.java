@@ -1,20 +1,22 @@
 package com.github.telegrambotstepfather.botinteractions.agent;
 
-import com.github.telegrambotstepfather.botinteractions.persistance.BrowserCookieCache;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.logger.Logger;
 
 import com.microsoft.playwright.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TelegramWebAgentImpl implements TelegramWebAgent {
 
-    private final BrowserCookieCache browserCookieCache;
+    private final Page.WaitForSelectorOptions waitForSelectorOptions;
+
     private final Logger logger;
     private final Cache cache;
     private final Playwright playwright;
@@ -23,11 +25,13 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     private Browser browser;
     private Page page;
 
-    public TelegramWebAgentImpl(Logger logger, BrowserCookieCache browserCookieCache, Cache cache) {
+    public TelegramWebAgentImpl(Logger logger, Cache cache) {
         this.playwright = Playwright.create();
-        this.browserCookieCache = browserCookieCache;
         this.logger = logger;
         this.cache = cache;
+
+        this.waitForSelectorOptions = new Page.WaitForSelectorOptions();
+        waitForSelectorOptions.setTimeout(10000);
     }
 
     @Override
@@ -36,7 +40,17 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
             BrowserType.LaunchOptions options = new BrowserType.LaunchOptions();
             options.setHeadless(false);
             this.browser = playwright.chromium().launch(options);
-            this.context = browser.newContext();
+
+            Path storageStatePath = Paths.get("/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/state.json");
+            if(Files.exists(storageStatePath)){
+                this.context = browser.newContext(new Browser.NewContextOptions().setStorageStatePath(storageStatePath));
+            }
+            else{
+                this.context = browser.newContext();
+            }
+
+            
+            // Create a new context with the saved storage state.
             page = context.newPage();
             page.navigate("https://web.telegram.org");
 
@@ -45,9 +59,14 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         }
     }
 
+    public void navigate(){
+        page.navigate("https://web.telegram.org");
+    }
+
     @Override
     public boolean isAlreadyLogin() {
-       return browserCookieCache.tryRetrieve(context);
+        boolean r = false;
+        return r;//browserCookieCache.tryRetrieve(context);
     }
 
     @Override
@@ -68,20 +87,17 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         String loginByPhoneButtonFromQrCodeSelector = "div.auth-form > button";
 
         logger.info("Try to switch authentication method to phone authentication.");
-        Optional<ElementHandle> loginByPhoneWrappedButton = waitForSelector(loginByPhoneButtonSelector, false);
-        Optional<ElementHandle> logingByPhoneAuthFormButton = waitForSelector(loginByPhoneButtonFromQrCodeSelector, false);
-            
-        loginByPhoneWrappedButton.ifPresent(e -> e.click());
-        logingByPhoneAuthFormButton.ifPresent(e -> e.click());
+        ElementHandle loginByPhoneButton = waitForElement(loginByPhoneButtonSelector, loginByPhoneButtonFromQrCodeSelector);
+        loginByPhoneButton.click();
     }
 
     @Override
-    public void fillLoginInformation(String phoneNumber) {
+    public void fillLoginInformation(String region, String phoneNumber) {
 
         logger.info("Fill required phone number.");
 
-        String phoneNumberRegionInputFieldselector = "div.input-field.input-field-phone > div.input-field-input";
-        String phoneNumberInputFieldSelector = "div.input-field.input-field-select > div.input-field-input";
+        String phoneNumberRegionInputFieldselector = "div.input-field.input-select > div.input-field-input";
+        String phoneNumberInputFieldSelector = "div.input-field.input-field-phone > div.input-field-input";
         String nextButtonSelector = "button:not(.btn-secondary)";
 
         String phoneNumberRegionInputFieldAlternativeSelector = "input#sign-in-phone-code";
@@ -90,37 +106,41 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
 
         // Find and interact with the phone input field
 
-        Optional<ElementHandle> phoneNumbeRegionElement = waitForSelector(phoneNumberRegionInputFieldselector, false);
-        Optional<ElementHandle> phoneNumbeRegionAlternativeElement = waitForSelector(phoneNumberRegionInputFieldAlternativeSelector, false);
-        phoneNumbeRegionElement.ifPresent(e -> e.fill(phoneNumber));
-        phoneNumbeRegionAlternativeElement.ifPresent(e -> e.fill(phoneNumber));
+        ElementHandle phoneNumberRegionElement = waitForElement(phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector);
+        phoneNumberRegionElement.fill(region);
+        phoneNumberRegionElement.click();
         
-        Optional<ElementHandle> phoneNumberElement = waitForSelector(phoneNumberInputFieldSelector, false);
-        Optional<ElementHandle> phoneNumberAlternativeElement = waitForSelector(phoneNumberInputFieldAlternativeSelector, false);
-        phoneNumberElement.ifPresent(e -> e.type(phoneNumber));
-        phoneNumberAlternativeElement.ifPresent(e -> e.type(phoneNumber));
+        // Update focus
+        page.focus("h4.text-center");
+
+        ElementHandle phoneNumberElement = waitForElement(phoneNumberInputFieldSelector, phoneNumberInputFieldAlternativeSelector);
+        phoneNumberElement.fill("");
+        phoneNumberElement.type(phoneNumber);
 
         // Click the "Next" button
-        Optional<ElementHandle> nextButtonElement = waitForSelector(nextButtonSelector, false);
-        Optional<ElementHandle> nextButtonAlternativeElement = waitForSelector(nextButtonAlternativeSelector, false);
-        nextButtonElement.ifPresent(e -> e.click());
-        nextButtonAlternativeElement.ifPresent(e -> e.click());
+        ElementHandle nextButtonElement = waitForElement(nextButtonSelector, nextButtonAlternativeSelector);
+        nextButtonElement.click();
     }
 
     @Override
     public void enterVerificationCode(String verificationCode) {
 
         String verificationCodeInputSelector = "div.input-field > input";
+        String verificationCodeInputAlternativeSelector = "div.auth-form > div.input-group > input";
 
         // Wait for the code input field to appear (simulate verification step)
-        page.waitForSelector(verificationCodeInputSelector);
+        ElementHandle verificationCodeElement = waitForElement(verificationCodeInputSelector, verificationCodeInputAlternativeSelector);
             
         // Simulate entering the verification code (replace with actual code)
-        page.fill(verificationCodeInputSelector, verificationCode); // Replace with the verification code
+        verificationCodeElement.fill(verificationCode);
 
         // Wait for successful authentication (replace with appropriate selector)
-        page.waitForSelector("#page-chats");
-        browserCookieCache.save(context);
+        //page.waitForSelector("#page-chats");
+        //browserCookieCache.save(context);
+
+        context.storageState(
+            new BrowserContext.StorageStateOptions()
+                .setPath(Paths.get("/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/state.json")));
     }
 
     @Override
@@ -214,21 +234,15 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     //#region Utils
 
     
-    private Optional<ElementHandle> waitForSelector(String selector, boolean isRequired) throws PlaywrightException
+    private ElementHandle waitForElement(String selector, String alternativeSelector) throws PlaywrightException
     {
         try{
-            ElementHandle elementHandle = page.waitForSelector(selector);
-            return Optional.of(elementHandle);
-
-        }catch(PlaywrightException ex)
-        {
-            if(isRequired)
-            {
-                throw ex;
-            }
+            return page.waitForSelector(selector, waitForSelectorOptions);
         }
-
-        return Optional.empty();
+        catch(PlaywrightException ex){
+            logger.info("Wait alternative selector - " + alternativeSelector);
+            return page.waitForSelector(alternativeSelector, waitForSelectorOptions);
+        }
     }
 
     //#endregion Utils

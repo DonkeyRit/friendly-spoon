@@ -24,18 +24,20 @@ public class Main {
         Cache cache = new FileCache(cacheFilePath);
         BrowserCookieCache browserCookieCache = new BrowserCookieCache(cookiesFilePath);
 
-        try (TelegramWebAgent telegramWebAgent = new TelegramWebAgentImpl(logger, browserCookieCache, cache)) {
+        try (TelegramWebAgent telegramWebAgent = new TelegramWebAgentImpl(logger, cache)) {
             String phoneNumber = "+381611360678";
+            String phoneRegion = "Serbia";
             String chatBotName = "@WhaleBot Pumps";
 
             telegramWebAgent.init();
             if (!telegramWebAgent.isAlreadyLogin()) {
                 telegramWebAgent.switchToLoginByPhone();
-                telegramWebAgent.fillLoginInformation(phoneNumber);
+                telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
 
                 String verificationCode = readLoginCode();
                 telegramWebAgent.enterVerificationCode(verificationCode);
             }
+            telegramWebAgent.navigate();
 
             while (true) {
                 List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName);
