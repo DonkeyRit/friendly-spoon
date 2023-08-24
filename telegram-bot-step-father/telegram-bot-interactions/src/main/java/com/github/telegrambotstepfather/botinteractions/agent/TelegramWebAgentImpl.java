@@ -1,5 +1,6 @@
 package com.github.telegrambotstepfather.botinteractions.agent;
 
+import com.github.telegrambotstepfather.botinteractions.extensions.PageExtensions;
 import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.logger.Logger;
@@ -77,8 +78,10 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         String loginByPhoneButtonFromQrCodeSelector = "div.auth-form > button";
 
         logger.info("Try to switch authentication method to phone authentication.");
-        ElementHandle loginByPhoneButton = waitForElement(loginByPhoneButtonSelector, loginByPhoneButtonFromQrCodeSelector);
-        loginByPhoneButton.click();
+
+        PageExtensions
+            .waitForSelectorsAsync(page, loginByPhoneButtonSelector, loginByPhoneButtonFromQrCodeSelector)
+            .click();
     }
 
     @Override
@@ -96,7 +99,7 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
 
         // Find and interact with the phone input field
 
-        ElementHandle phoneNumberRegionElement = waitForElement(phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector);
+        ElementHandle phoneNumberRegionElement = PageExtensions.waitForElement(page, phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector);
         phoneNumberRegionElement.fill("");
         phoneNumberRegionElement.fill(region);
 
@@ -104,12 +107,12 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         
         // Update focus
 
-        ElementHandle phoneNumberElement = waitForElement(phoneNumberInputFieldSelector, phoneNumberInputFieldAlternativeSelector);
+        ElementHandle phoneNumberElement = PageExtensions.waitForElement(page, phoneNumberInputFieldSelector, phoneNumberInputFieldAlternativeSelector);
         phoneNumberElement.fill("");
         phoneNumberElement.type(phoneNumber);
 
         // Click the "Next" button
-        ElementHandle nextButtonElement = waitForElement(nextButtonSelector, nextButtonAlternativeSelector);
+        ElementHandle nextButtonElement = PageExtensions.waitForElement(page, nextButtonSelector, nextButtonAlternativeSelector);
         nextButtonElement.click();
     }
 
@@ -120,7 +123,7 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         String verificationCodeInputAlternativeSelector = "div.auth-form > div.input-group > input";
 
         // Wait for the code input field to appear (simulate verification step)
-        ElementHandle verificationCodeElement = waitForElement(verificationCodeInputSelector, verificationCodeInputAlternativeSelector);
+        ElementHandle verificationCodeElement = PageExtensions.waitForElement(page, verificationCodeInputSelector, verificationCodeInputAlternativeSelector);
             
         // Simulate entering the verification code (replace with actual code)
         verificationCodeElement.fill(verificationCode);
@@ -170,20 +173,4 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
 
         return output;
     }
-
-    //#region Utils
-
-    
-    private ElementHandle waitForElement(String selector, String alternativeSelector) throws PlaywrightException
-    {
-        try{
-            return page.waitForSelector(selector, waitForSelectorOptions);
-        }
-        catch(PlaywrightException ex){
-            logger.info("Wait alternative selector - " + alternativeSelector);
-            return page.waitForSelector(alternativeSelector, waitForSelectorOptions);
-        }
-    }
-
-    //#endregion Utils
 }
