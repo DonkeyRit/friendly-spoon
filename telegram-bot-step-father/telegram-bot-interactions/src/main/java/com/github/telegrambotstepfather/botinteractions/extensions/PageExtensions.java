@@ -7,9 +7,12 @@ import com.microsoft.playwright.Page;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CompletableFuture;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PageExtensions {
 
-    private static final double DEFAULT_TIMEOUT = 10000;
+    private static final double DEFAULT_TIMEOUT = 15000;
 
     public static ElementHandle waitForElement(Page page, String selector, String alternativeSelector)
             throws PlaywrightException {
@@ -23,34 +26,25 @@ public class PageExtensions {
         }
     }
 
-    public static ElementHandle waitForSelectorsAsync(Page page, String selector1, String selector2) {
+    public static ElementHandle waitForSelectorsAsync(Page page, String... selectors) {
 
-        CompletableFuture<ElementHandle> combinedFuture = CompletableFuture.anyOf(
-                waitForSelectorAsync(page, selector1, DEFAULT_TIMEOUT),
-                waitForSelectorAsync(page, selector2, DEFAULT_TIMEOUT))
-            .thenApply(result -> (ElementHandle) result);
+        List<CompletableFuture<ElementHandle>> futures = Arrays.stream(selectors)
+                .map(selector -> waitForSelectorAsync(page, selector, DEFAULT_TIMEOUT))
+                .toList();
 
         try {
-            ElementHandle locatedElement = combinedFuture.get(); // Wait for the first non-null selector or timeout
-            if (locatedElement != null) {
-                return locatedElement;
-            } else {
-                throw new RuntimeException("Element not found with either selector");
-            }
+            return (ElementHandle) CompletableFuture.anyOf(futures.toArray(CompletableFuture[]::new)).get();
+
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        return null;
+        throw new RuntimeException(String.format("Element not found with either selector - [%s]", String.join(" ", selectors)));
     }
 
     private static CompletableFuture<ElementHandle> waitForSelectorAsync(Page page, String selector, double timeout) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return page.waitForSelector(selector, new Page.WaitForSelectorOptions().setTimeout(timeout));
-            } catch (PlaywrightException e) {
-                return null;
-            }
-        });
+        return CompletableFuture
+                .supplyAsync(
+                        () -> page.waitForSelector(selector, new Page.WaitForSelectorOptions().setTimeout(timeout)));
     }
 }

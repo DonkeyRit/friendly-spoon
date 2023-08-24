@@ -6,6 +6,7 @@ import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.logger.Logger;
 
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.LoadState;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,14 +51,18 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
                 this.context = browser.newContext();
             }
 
-            
-            // Create a new context with the saved storage state.
-            page = context.newPage();
-            page.navigate("https://web.telegram.org");
+            page = context.newPage();            
 
         } catch (Exception exception) {
             System.out.println("Failed initialization");
         }
+    }
+
+    @Override
+    public void navigate(String url) {
+        page.navigate(url);
+        page.waitForLoadState(LoadState.DOMCONTENTLOADED);
+        page.waitForLoadState(LoadState.LOAD);
     }
 
     @Override
@@ -89,31 +94,37 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
 
         logger.info("Fill required phone number.");
 
-        String phoneNumberRegionInputFieldselector = "div.input-field.input-select > div.input-field-input";
         String phoneNumberInputFieldSelector = "div.input-field.input-field-phone > div.input-field-input";
-        String nextButtonSelector = "button:not(.btn-secondary)";
-
-        String phoneNumberRegionInputFieldAlternativeSelector = "input#sign-in-phone-code";
         String phoneNumberInputFieldAlternativeSelector = "input#sign-in-phone-number";
+        
+        String nextButtonSelector = "button:not(.btn-secondary)";
         String nextButtonAlternativeSelector = "div.input-wrapper > buttom.btn-primary";
 
         // Find and interact with the phone input field
 
-        ElementHandle phoneNumberRegionElement = PageExtensions.waitForElement(page, phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector);
-        phoneNumberRegionElement.fill("");
-        phoneNumberRegionElement.fill(region);
+        //String phoneNumberRegionInputFieldselector = "div.input-field.input-select > div.input-field-input";
+        //String phoneNumberRegionInputFieldAlternativeSelector = "input#sign-in-phone-code";
 
-        page.click("li:not([style*='display: none'])");
+        //PageExtensions
+            //.waitForSelectorsAsync(page, phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector)
+            //.type(region);
+
+        //ElementHandle phoneNumberRegionElement = PageExtensions.waitForElement(page, phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector);
+        //phoneNumberRegionElement.fill("");
+        //phoneNumberRegionElement.fill(region);
+
+        //page.click("li:not([style*='display: none'])");
         
         // Update focus
 
-        ElementHandle phoneNumberElement = PageExtensions.waitForElement(page, phoneNumberInputFieldSelector, phoneNumberInputFieldAlternativeSelector);
+        ElementHandle phoneNumberElement = PageExtensions.waitForSelectorsAsync(page, phoneNumberInputFieldSelector, phoneNumberInputFieldAlternativeSelector);
         phoneNumberElement.fill("");
         phoneNumberElement.type(phoneNumber);
 
         // Click the "Next" button
-        ElementHandle nextButtonElement = PageExtensions.waitForElement(page, nextButtonSelector, nextButtonAlternativeSelector);
-        nextButtonElement.click();
+        PageExtensions
+            .waitForSelectorsAsync(page, nextButtonSelector, nextButtonAlternativeSelector)
+            .click();
     }
 
     @Override

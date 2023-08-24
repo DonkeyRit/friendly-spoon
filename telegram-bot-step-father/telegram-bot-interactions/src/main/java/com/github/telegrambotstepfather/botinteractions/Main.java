@@ -33,6 +33,7 @@ public class Main {
             String chatBotName = "@WhaleBot Pumps";
 
             telegramWebAgent.init();
+            telegramWebAgent.navigate("https://web.telegram.org");
             telegramWebAgent.switchToLoginByPhone();
             telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
 
@@ -43,6 +44,9 @@ public class Main {
                 List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName, messageFilter);
                 messages.forEach(System.out::println);
             }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
         }
 
         /*
