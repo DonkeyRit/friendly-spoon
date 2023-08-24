@@ -4,18 +4,14 @@ import com.github.telegrambotstepfather.bot.interfaces.TelegramBot;
 import com.github.telegrambotstepfather.bot.interfaces.TelegramBotFather;
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgent;
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgentImpl;
+import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
+import com.github.telegrambotstepfather.botinteractions.filter.MessageFilterImpl;
 import com.github.telegrambotstepfather.botinteractions.logger.ConsoleLogger;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.persistance.FileCache;
 import com.github.telegrambotstepfather.exceptions.JacksonJsonParsingException;
 import com.github.telegrambotstepfather.exceptions.TelegramApiException;
 import com.github.telegrambotstepfather.ioc.Providers.ServiceProvider;
-import com.github.telegrambotstepfather.models.request.SendMessageRequest;
-import com.github.telegrambotstepfather.models.response.User;
-import com.github.amazonnotifier.handlers.UpdateEventListener;
-
-import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgent;
-import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgentImpl;
 
 import com.google.inject.Injector;
 
@@ -41,49 +37,51 @@ public class App {
 
             TelegramBotFather botFather = injector.getInstance(TelegramBotFather.class);
             TelegramBot telegramBot = injector.getInstance(TelegramBot.class);
-            //User bot = botFather.init();
-            ///logger.info(() -> "Telegram Bot - " + bot.firstName());
+            // User bot = botFather.init();
+            /// logger.info(() -> "Telegram Bot - " + bot.firstName());
 
-            //UpdateEventListener eventListener = new UpdateEventListener(logger,
-                    //injector.getInstance(TelegramBot.class));
-            //botFather.getUpdatesEventSource().addListener(eventListener);
+            // UpdateEventListener eventListener = new UpdateEventListener(logger,
+            // injector.getInstance(TelegramBot.class));
+            // botFather.getUpdatesEventSource().addListener(eventListener);
+
+            String cacheFilePath = "/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/cache.ch";
+            String storageStatePath = "/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/state.json";
 
             ConsoleLogger consoleLogger = new ConsoleLogger();
-            Cache cache = new FileCache(
-                    "/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/target/cache.ch");
+            Cache cache = new FileCache(cacheFilePath);
+            MessageFilter messageFilter = new MessageFilterImpl("Pumping on Binance", 0);
 
             try (TelegramWebAgent telegramWebAgent = new TelegramWebAgentImpl(consoleLogger, cache)) {
                 String phoneNumber = "+381611360678";
+                String phoneRegion = "Serbia";
                 String chatBotName = "@WhaleBot Pumps";
 
-                telegramWebAgent.init();
+                boolean isAuthenticated = telegramWebAgent.init(storageStatePath);
+                telegramWebAgent.navigate("https://web.telegram.org");
 
-                telegramWebAgent.switchToLoginByPhone();
-                telegramWebAgent.fillLoginInformation(phoneNumber);
+                if (!isAuthenticated) {
+                    telegramWebAgent.switchToLoginByPhone();
+                    telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
 
-                String verificationCode = readLoginCode();
-                telegramWebAgent.enterVerificationCode(verificationCode);
+                    String verificationCode = readLoginCode();
+                    telegramWebAgent.enterVerificationCode(verificationCode);
+                }
 
                 while (true) {
-                    List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName);
-                    for (String message : messages) {
-                        double chatId = 497848067.000000;
-                        SendMessageRequest<Object> messageRequest = SendMessageRequest.of(chatId, "Test empty");
-                        telegramBot.sendMessage(messageRequest);
-                    }
-                    
+                    List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName, messageFilter);
                     messages.forEach(System.out::println);
                 }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-        } catch (Exception ex) {
-            System.out.println(ex.getCause());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
-    private static String readLoginCode()
-    {
+    private static String readLoginCode() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the verification code: ");
         return scanner.nextLine();

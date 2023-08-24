@@ -5,8 +5,8 @@ import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.logger.Logger;
 
-import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TelegramWebAgentImpl implements TelegramWebAgent {
-
-    private final Page.WaitForSelectorOptions waitForSelectorOptions;
 
     private final Logger logger;
     private final Cache cache;
@@ -31,21 +29,22 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         this.playwright = Playwright.create();
         this.logger = logger;
         this.cache = cache;
-
-        this.waitForSelectorOptions = new Page.WaitForSelectorOptions();
-        waitForSelectorOptions.setTimeout(10000);
     }
 
     @Override
-    public void init() {
+    public boolean init(String storageStateFilePath) {
+
+        boolean isAuthenticated = false;
+
         try {
             BrowserType.LaunchOptions options = new BrowserType.LaunchOptions();
             options.setHeadless(false);
             this.browser = playwright.chromium().launch(options);
 
-            Path storageStatePath = Paths.get("/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/state.json");
+            Path storageStatePath = Paths.get(storageStateFilePath);
             if(Files.exists(storageStatePath)){
                 this.context = browser.newContext(new Browser.NewContextOptions().setStorageStatePath(storageStatePath));
+                isAuthenticated = true;
             }
             else{
                 this.context = browser.newContext();
@@ -56,6 +55,8 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         } catch (Exception exception) {
             System.out.println("Failed initialization");
         }
+
+        return isAuthenticated;
     }
 
     @Override

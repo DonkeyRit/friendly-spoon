@@ -15,6 +15,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         String cacheFilePath = "/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/cache.ch";
+        String storageStatePath = "/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/state.json";
 
         ConsoleLogger logger = new ConsoleLogger();
         Cache cache = new FileCache(cacheFilePath);
@@ -25,20 +26,22 @@ public class Main {
             String phoneRegion = "Serbia";
             String chatBotName = "@WhaleBot Pumps";
 
-            telegramWebAgent.init();
+            boolean isAuthenticated = telegramWebAgent.init(storageStatePath);
             telegramWebAgent.navigate("https://web.telegram.org");
-            telegramWebAgent.switchToLoginByPhone();
-            telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
 
-            String verificationCode = readLoginCode();
-            telegramWebAgent.enterVerificationCode(verificationCode);
-            
+            if (!isAuthenticated) {
+                telegramWebAgent.switchToLoginByPhone();
+                telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
+
+                String verificationCode = readLoginCode();
+                telegramWebAgent.enterVerificationCode(verificationCode);
+            }
+
             while (true) {
                 List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName, messageFilter);
                 messages.forEach(System.out::println);
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

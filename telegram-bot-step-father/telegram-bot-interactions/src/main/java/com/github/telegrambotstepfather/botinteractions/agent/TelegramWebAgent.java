@@ -6,7 +6,7 @@ import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
 
 public interface TelegramWebAgent extends AutoCloseable {
 
-    void init();
+    boolean init(String storageStateFilePath);
     void navigate(String url);
     byte[] getLoginQrCode();
     void switchToLoginByPhone();
