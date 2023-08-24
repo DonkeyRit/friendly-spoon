@@ -2,14 +2,14 @@ package com.github.telegrambotstepfather.botinteractions.agent;
 
 import java.util.List;
 
+import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
+
 public interface TelegramWebAgent extends AutoCloseable {
 
-    boolean isAlreadyLogin();
     void init();
-    void navigate();
     byte[] getLoginQrCode();
     void switchToLoginByPhone();
     void fillLoginInformation(String region, String phoneNumber);
     void enterVerificationCode(String verificationCode);
-    List<String> readMessagesFromSpecificChat(String chatName);
+    List<String> readMessagesFromSpecificChat(String chatName, MessageFilter messageFilter);
 }

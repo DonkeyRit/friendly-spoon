@@ -2,6 +2,8 @@ package com.github.telegrambotstepfather.botinteractions;
 
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgent;
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgentImpl;
+import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
+import com.github.telegrambotstepfather.botinteractions.filter.MessageFilterImpl;
 import com.github.telegrambotstepfather.botinteractions.logger.ConsoleLogger;
 import com.github.telegrambotstepfather.botinteractions.persistance.BrowserCookieCache;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
@@ -23,6 +25,7 @@ public class Main {
         ConsoleLogger logger = new ConsoleLogger();
         Cache cache = new FileCache(cacheFilePath);
         BrowserCookieCache browserCookieCache = new BrowserCookieCache(cookiesFilePath);
+        MessageFilter messageFilter = new MessageFilterImpl("Pumping on Binance", 0);
 
         try (TelegramWebAgent telegramWebAgent = new TelegramWebAgentImpl(logger, cache)) {
             String phoneNumber = "+381611360678";
@@ -30,17 +33,14 @@ public class Main {
             String chatBotName = "@WhaleBot Pumps";
 
             telegramWebAgent.init();
-            if (!telegramWebAgent.isAlreadyLogin()) {
-                telegramWebAgent.switchToLoginByPhone();
-                telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
+            telegramWebAgent.switchToLoginByPhone();
+            telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
 
-                String verificationCode = readLoginCode();
-                telegramWebAgent.enterVerificationCode(verificationCode);
-            }
-            telegramWebAgent.navigate();
-
+            String verificationCode = readLoginCode();
+            telegramWebAgent.enterVerificationCode(verificationCode);
+            
             while (true) {
-                List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName);
+                List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName, messageFilter);
                 messages.forEach(System.out::println);
             }
         }
