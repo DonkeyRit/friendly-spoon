@@ -1,5 +1,6 @@
 package com.github.amazonnotifier;
 
+import com.github.amazonnotifier.handlers.UpdateEventListener;
 import com.github.telegrambotstepfather.bot.interfaces.TelegramBot;
 import com.github.telegrambotstepfather.bot.interfaces.TelegramBotFather;
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgent;
@@ -12,7 +13,8 @@ import com.github.telegrambotstepfather.botinteractions.persistance.FileCache;
 import com.github.telegrambotstepfather.exceptions.JacksonJsonParsingException;
 import com.github.telegrambotstepfather.exceptions.TelegramApiException;
 import com.github.telegrambotstepfather.ioc.Providers.ServiceProvider;
-
+import com.github.telegrambotstepfather.models.request.SendMessageRequest;
+import com.github.telegrambotstepfather.models.response.User;
 import com.google.inject.Injector;
 
 import java.util.List;
@@ -38,7 +40,7 @@ public class App {
             TelegramBotFather botFather = injector.getInstance(TelegramBotFather.class);
             TelegramBot telegramBot = injector.getInstance(TelegramBot.class);
             // User bot = botFather.init();
-            /// logger.info(() -> "Telegram Bot - " + bot.firstName());
+            // logger.info(() -> "Telegram Bot - " + bot.firstName());
 
             // UpdateEventListener eventListener = new UpdateEventListener(logger,
             // injector.getInstance(TelegramBot.class));
@@ -69,7 +71,19 @@ public class App {
 
                 while (true) {
                     List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName, messageFilter);
-                    messages.forEach(System.out::println);
+                    messages.forEach(m -> {
+                        try {
+                            String escapedMessageText = m
+                                .replace("!", "\\!")
+                                .replace(".", "\\.")
+                                .replace("(", "\\(")
+                                .replace(")", "\\)");
+                            telegramBot.sendMessage(SendMessageRequest.of(497848067.000000, escapedMessageText));
+                        } catch (TelegramApiException | JacksonJsonParsingException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    });
                 }
 
             } catch (Exception e) {

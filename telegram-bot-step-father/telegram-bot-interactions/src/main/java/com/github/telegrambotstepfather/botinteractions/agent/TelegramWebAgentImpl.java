@@ -1,6 +1,5 @@
 package com.github.telegrambotstepfather.botinteractions.agent;
 
-import com.github.telegrambotstepfather.botinteractions.extensions.PageExtensions;
 import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.logger.Logger;
@@ -64,6 +63,7 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
         page.navigate(url);
         page.waitForLoadState(LoadState.DOMCONTENTLOADED);
         page.waitForLoadState(LoadState.LOAD);
+        page.waitForLoadState(LoadState.NETWORKIDLE);
     }
 
     @Override
@@ -80,14 +80,9 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     @Override
     public void switchToLoginByPhone() {
 
-        String loginByPhoneButtonSelector = "div.input-wrapper > button";
-        String loginByPhoneButtonFromQrCodeSelector = "div.auth-form > button";
-
+        String loginByPhoneButtonSelector = "div.input-wrapper > button, div.auth-form > button";
         logger.info("Try to switch authentication method to phone authentication.");
-
-        PageExtensions
-            .waitForSelectorsAsync(page, loginByPhoneButtonSelector, loginByPhoneButtonFromQrCodeSelector)
-            .click();
+        page.waitForSelector(loginByPhoneButtonSelector).click();
     }
 
     @Override
@@ -95,47 +90,22 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
 
         logger.info("Fill required phone number.");
 
-        String phoneNumberInputFieldSelector = "div.input-field.input-field-phone > div.input-field-input";
-        String phoneNumberInputFieldAlternativeSelector = "input#sign-in-phone-number";
-        
-        String nextButtonSelector = "button:not(.btn-secondary)";
-        String nextButtonAlternativeSelector = "div.input-wrapper > buttom.btn-primary";
-
-        // Find and interact with the phone input field
-
-        //String phoneNumberRegionInputFieldselector = "div.input-field.input-select > div.input-field-input";
-        //String phoneNumberRegionInputFieldAlternativeSelector = "input#sign-in-phone-code";
-
-        //PageExtensions
-            //.waitForSelectorsAsync(page, phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector)
-            //.type(region);
-
-        //ElementHandle phoneNumberRegionElement = PageExtensions.waitForElement(page, phoneNumberRegionInputFieldselector, phoneNumberRegionInputFieldAlternativeSelector);
-        //phoneNumberRegionElement.fill("");
-        //phoneNumberRegionElement.fill(region);
-
-        //page.click("li:not([style*='display: none'])");
-        
-        // Update focus
-
-        ElementHandle phoneNumberElement = PageExtensions.waitForSelectorsAsync(page, phoneNumberInputFieldSelector, phoneNumberInputFieldAlternativeSelector);
+        String phoneNumberInputFieldSelector = "div.input-field.input-field-phone > div.input-field-input, input#sign-in-phone-number";
+        ElementHandle phoneNumberElement = page.waitForSelector(phoneNumberInputFieldSelector);
         phoneNumberElement.fill("");
         phoneNumberElement.type(phoneNumber);
 
-        // Click the "Next" button
-        PageExtensions
-            .waitForSelectorsAsync(page, nextButtonSelector, nextButtonAlternativeSelector)
-            .click();
+        String nextButtonSelector = "div.input-wrapper > buttom.btn-primary, button:not(.btn-secondary)";
+        page.waitForSelector(nextButtonSelector).click();
     }
 
     @Override
     public void enterVerificationCode(String verificationCode) {
 
-        String verificationCodeInputSelector = "div.input-field > input";
-        String verificationCodeInputAlternativeSelector = "div.auth-form > div.input-group > input";
+        String verificationCodeInputSelector = "div.input-field > input, div.auth-form > div.input-group > input";
 
         // Wait for the code input field to appear (simulate verification step)
-        ElementHandle verificationCodeElement = PageExtensions.waitForElement(page, verificationCodeInputSelector, verificationCodeInputAlternativeSelector);
+        ElementHandle verificationCodeElement = page.waitForSelector(verificationCodeInputSelector);
             
         // Simulate entering the verification code (replace with actual code)
         verificationCodeElement.fill(verificationCode);
