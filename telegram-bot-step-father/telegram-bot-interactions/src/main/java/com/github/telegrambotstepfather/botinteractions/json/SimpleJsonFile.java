@@ -1,18 +1,13 @@
 package com.github.telegrambotstepfather.botinteractions.json;
 
 import com.github.telegrambotstepfather.botinteractions.json.deserializers.ManualJsonDeserializer;
-import com.github.telegrambotstepfather.botinteractions.json.deserializers.CookieDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
-import java.util.List;
 
 public class SimpleJsonFile<T> implements JsonFile<T> {
 
