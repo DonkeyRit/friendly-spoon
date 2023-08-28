@@ -16,6 +16,7 @@
     <module>telegram-api-models</module>
     <module>telegram-api-http</module>
     <module>telegram-bot-step-father</module>
+    <module>telegram-bot-interactions</module>
   </modules>
 
   <properties>
