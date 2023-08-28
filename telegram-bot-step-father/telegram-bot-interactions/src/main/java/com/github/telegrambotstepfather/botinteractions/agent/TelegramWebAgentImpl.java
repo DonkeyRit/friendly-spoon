@@ -135,10 +135,10 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
 
         List<String> output = new ArrayList<>();
         List<ElementHandle> messageElements = page
-                .querySelectorAll(".bubbles-inner .bubbles-date-group .bubbles-group");
+                .querySelectorAll(".bubbles-inner .bubbles-date-group .bubbles-group > div > div > div > div.message");
 
         for (ElementHandle messageElement : messageElements) {
-            String messageText = messageElement.innerText();
+            String messageText = messageElement.innerHTML();
 
             if (!cache.containsMessage(messageText)) {
                 cache.saveMessage(messageText);
