@@ -1,6 +1,5 @@
 package com.github.amazonnotifier;
 
-import com.github.amazonnotifier.handlers.UpdateEventListener;
 import com.github.telegrambotstepfather.bot.interfaces.TelegramBot;
 import com.github.telegrambotstepfather.bot.interfaces.TelegramBotFather;
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgent;
@@ -13,31 +12,28 @@ import com.github.telegrambotstepfather.botinteractions.persistance.FileCache;
 import com.github.telegrambotstepfather.exceptions.JacksonJsonParsingException;
 import com.github.telegrambotstepfather.exceptions.TelegramApiException;
 import com.github.telegrambotstepfather.ioc.Providers.ServiceProvider;
+import com.github.telegrambotstepfather.models.message.MessageEntity;
 import com.github.telegrambotstepfather.models.request.SendMessageRequest;
-import com.github.telegrambotstepfather.models.response.User;
+import com.github.telegrambotstepfather.models.request.enums.ParseMode;
 import com.google.inject.Injector;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.Duration;
 
 public class App {
 
     public static void main(String[] args) throws IOException, TelegramApiException, JacksonJsonParsingException {
-        // String url =
-        // "https://www.amazon.com/gp/product/B0BBHD5D8Y/ref=ox_sc_saved_title_1?smid=ATVPDKIKX0DER&psc=1";
-
-        // AmazonScrapper scrapper = new AmazonScrapper();
-        // scrapper.parse(url);
-
         try {
             Injector injector = ServiceProvider.buildServiceProvider();
 
             Logger logger = injector.getInstance(Logger.class);
             logger.info("Start application...");
 
-            TelegramBotFather botFather = injector.getInstance(TelegramBotFather.class);
             TelegramBot telegramBot = injector.getInstance(TelegramBot.class);
             // User bot = botFather.init();
             // logger.info(() -> "Telegram Bot - " + bot.firstName());
@@ -73,17 +69,35 @@ public class App {
                     List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName, messageFilter);
                     messages.forEach(m -> {
                         try {
+
+                            String message = m
+                                .replace("class=\"emoji\"", "class=\"tg-spoiler\"");
+
+
                             String escapedMessageText = m
-                                .replace("!", "\\!")
-                                .replace(".", "\\.")
-                                .replace("(", "\\(")
-                                .replace(")", "\\)");
-                            telegramBot.sendMessage(SendMessageRequest.of(497848067.000000, escapedMessageText));
+                                    .replace("!", "\\!")
+                                    .replace(".", "\\.")
+                                    .replace("(", "\\(")
+                                    .replace(")", "\\)")
+                                    .replace("=", "\\=")
+                                    .replace(">", "\\>")
+                                    .replace("<", "\\<")
+                                    .replace("-", "\\-");
+
+                            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+                            String stringChatId = decimalFormat.format(497848067.000000);
+                            SendMessageRequest<Object> sendMessageRequest = new SendMessageRequest<Object>(stringChatId, (Optional<Integer>) null, message,
+                                    Optional.of(ParseMode.HTML), (Optional<MessageEntity>) null, (Optional<Boolean>) null,
+                                    (Optional<Boolean>) null, (Optional<Boolean>) null, (Optional<Integer>) null, (Optional<Boolean>) null,
+                                    (Optional<Object>) null);
+
+                            telegramBot.sendMessage(sendMessageRequest);
                         } catch (TelegramApiException | JacksonJsonParsingException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     });
+                    Thread.sleep(Duration.ofMinutes(3));
                 }
 
             } catch (Exception e) {
