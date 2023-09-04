@@ -147,6 +147,7 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     public List<ChatMessage> readMessagesFromOpenedChat()
     {
         List<ChatMessage> output = new ArrayList<>();
+        page.waitForSelector("div.text-content");
         List<ElementHandle> messageElements = page
                 .querySelectorAll("div.text-content");
 

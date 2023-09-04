@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.github.telegrambotstepfather</groupId>
             <artifactId>telegram-bot-interactions</artifactId>
-            <version>0.0.26-SNAPSHOT</version>
+            <version>0.0.27-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
