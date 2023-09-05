@@ -1,89 +1,75 @@
 package com.github.amazonnotifier;
 
-import com.github.amazonnotifier.handlers.UpdateEventListener;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.github.telegrambotstepfather.bot.interfaces.TelegramBot;
-import com.github.telegrambotstepfather.bot.interfaces.TelegramBotFather;
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgent;
 import com.github.telegrambotstepfather.botinteractions.agent.TelegramWebAgentImpl;
 import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
 import com.github.telegrambotstepfather.botinteractions.filter.MessageFilterImpl;
 import com.github.telegrambotstepfather.botinteractions.logger.ConsoleLogger;
+import com.github.telegrambotstepfather.botinteractions.models.ChatMessage;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.persistance.FileCache;
 import com.github.telegrambotstepfather.exceptions.JacksonJsonParsingException;
 import com.github.telegrambotstepfather.exceptions.TelegramApiException;
 import com.github.telegrambotstepfather.ioc.Providers.ServiceProvider;
+import com.github.telegrambotstepfather.models.message.MessageEntity;
 import com.github.telegrambotstepfather.models.request.SendMessageRequest;
-import com.github.telegrambotstepfather.models.response.User;
+import com.github.telegrambotstepfather.models.request.enums.ParseMode;
 import com.google.inject.Injector;
-
-import java.util.List;
-import java.util.Scanner;
-import java.util.logging.Logger;
-import java.io.IOException;
 
 public class App {
 
     public static void main(String[] args) throws IOException, TelegramApiException, JacksonJsonParsingException {
-        // String url =
-        // "https://www.amazon.com/gp/product/B0BBHD5D8Y/ref=ox_sc_saved_title_1?smid=ATVPDKIKX0DER&psc=1";
-
-        // AmazonScrapper scrapper = new AmazonScrapper();
-        // scrapper.parse(url);
-
         try {
             Injector injector = ServiceProvider.buildServiceProvider();
 
             Logger logger = injector.getInstance(Logger.class);
             logger.info("Start application...");
 
-            TelegramBotFather botFather = injector.getInstance(TelegramBotFather.class);
             TelegramBot telegramBot = injector.getInstance(TelegramBot.class);
-            // User bot = botFather.init();
-            // logger.info(() -> "Telegram Bot - " + bot.firstName());
-
-            // UpdateEventListener eventListener = new UpdateEventListener(logger,
-            // injector.getInstance(TelegramBot.class));
-            // botFather.getUpdatesEventSource().addListener(eventListener);
-
             String cacheFilePath = "/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/cache.ch";
             String storageStatePath = "/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/state.json";
+            String chatBotName = "@WhaleBot Pumps";
 
             ConsoleLogger consoleLogger = new ConsoleLogger();
             Cache cache = new FileCache(cacheFilePath);
             MessageFilter messageFilter = new MessageFilterImpl("Pumping on Binance", 0);
 
             try (TelegramWebAgent telegramWebAgent = new TelegramWebAgentImpl(consoleLogger, cache)) {
-                String phoneNumber = "+381611360678";
-                String phoneRegion = "Serbia";
-                String chatBotName = "@WhaleBot Pumps";
 
-                boolean isAuthenticated = telegramWebAgent.init(storageStatePath);
+                telegramWebAgent.init(Optional.of(storageStatePath));
                 telegramWebAgent.navigate("https://web.telegram.org");
 
-                if (!isAuthenticated) {
-                    telegramWebAgent.switchToLoginByPhone();
-                    telegramWebAgent.fillLoginInformation(phoneRegion, phoneNumber);
-
-                    String verificationCode = readLoginCode();
-                    telegramWebAgent.enterVerificationCode(verificationCode);
-                }
-
                 while (true) {
-                    List<String> messages = telegramWebAgent.readMessagesFromSpecificChat(chatBotName, messageFilter);
-                    messages.forEach(m -> {
-                        try {
-                            String escapedMessageText = m
-                                .replace("!", "\\!")
-                                .replace(".", "\\.")
-                                .replace("(", "\\(")
-                                .replace(")", "\\)");
-                            telegramBot.sendMessage(SendMessageRequest.of(497848067.000000, escapedMessageText));
-                        } catch (TelegramApiException | JacksonJsonParsingException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    });
+
+                    List<String> messages = telegramWebAgent
+                            .readMessagesFromSpecificChat(chatBotName)
+                            .stream()
+                            .filter(m -> messageFilter.filter(m.innerText()))
+                            .map(App::convertTelegramMessage)
+                            .toList();
+                    messages.forEach(m -> sendTelegramMessage(telegramBot, m));
+                    Thread.sleep(Duration.ofMinutes(1));
+
+                    while (true) {
+                        messages = telegramWebAgent
+                                .readMessagesFromOpenedChat()
+                                .stream()
+                                .filter(m -> messageFilter.filter(m.innerText()))
+                                .map(App::convertTelegramMessage)
+                                .toList();
+                        messages.forEach(m -> sendTelegramMessage(telegramBot, m));
+                        Thread.sleep(Duration.ofMinutes(1));
+                    }
                 }
 
             } catch (Exception e) {
@@ -95,9 +81,39 @@ public class App {
         }
     }
 
-    private static String readLoginCode() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the verification code: ");
-        return scanner.nextLine();
+    private static void sendTelegramMessage(TelegramBot telegramBot, String message) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+        String stringChatId = decimalFormat.format(6597283274.0000);
+        SendMessageRequest<Object> sendMessageRequest = new SendMessageRequest<Object>(stringChatId,
+                (Optional<Integer>) null, message,
+                Optional.of(ParseMode.HTML), (Optional<MessageEntity>) null,
+                (Optional<Boolean>) null,
+                (Optional<Boolean>) null, (Optional<Boolean>) null, (Optional<Integer>) null,
+                (Optional<Boolean>) null,
+                (Optional<Object>) null);
+
+        try {
+            telegramBot.sendMessage(sendMessageRequest);
+        } catch (TelegramApiException | JacksonJsonParsingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String convertTelegramMessage(ChatMessage chatMessage){
+        Pattern pattern = Pattern.compile("(<a [^>]*>([^<]*)</a>)");
+        Matcher matcher = pattern.matcher(chatMessage.innerHtml());
+
+        while (matcher.find()) {
+            String fullLink = matcher.group(1);
+            String linkText = matcher.group(2);
+
+            if (chatMessage.innerText().contains(linkText)) {
+                String resultMessage = chatMessage.innerText().replace(linkText, fullLink);
+                System.out.println(resultMessage);
+                return resultMessage;
+            }
+        }
+
+        return chatMessage.innerText();
     }
 }

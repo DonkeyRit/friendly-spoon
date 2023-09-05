@@ -1,17 +1,19 @@
 package com.github.telegrambotstepfather.botinteractions.agent;
 
-import com.github.telegrambotstepfather.botinteractions.filter.MessageFilter;
 import com.github.telegrambotstepfather.botinteractions.persistance.Cache;
 import com.github.telegrambotstepfather.botinteractions.logger.Logger;
-
+import com.github.telegrambotstepfather.botinteractions.models.ChatMessage;
+import com.microsoft.playwright.BrowserContext.StorageStateOptions;
+import com.microsoft.playwright.Browser.NewContextOptions;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.*;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.List;
 
 public class TelegramWebAgentImpl implements TelegramWebAgent {
@@ -31,25 +33,38 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     }
 
     @Override
-    public boolean init(String storageStateFilePath) {
+    public boolean init(Optional<String> storageStateFilePath) {
 
         boolean isAuthenticated = false;
 
         try {
-            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions();
-            options.setHeadless(false);
-            this.browser = playwright.chromium().launch(options);
+            BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
+                .setHeadless(false);
+            this.browser = playwright
+                .chromium()
+                .launch(launchOptions);
 
-            Path storageStatePath = Paths.get(storageStateFilePath);
-            if(Files.exists(storageStatePath)){
-                this.context = browser.newContext(new Browser.NewContextOptions().setStorageStatePath(storageStatePath));
-                isAuthenticated = true;
-            }
-            else{
+            storageStateFilePath.ifPresent(filePath -> {
+                Path storageStatePath = Paths.get(filePath);
+
+                if(Files.exists(storageStatePath))
+                {
+                    NewContextOptions newContextOptions = new Browser.NewContextOptions()
+                        .setStorageStatePath(storageStatePath);
+                    this.context = browser.newContext(newContextOptions);
+                }
+            });
+
+            if(this.context == null)
+            {
                 this.context = browser.newContext();
             }
+            else
+            {
+                isAuthenticated = true;
+            }
 
-            page = context.newPage();            
+            page = context.newPage();
 
         } catch (Exception exception) {
             System.out.println("Failed initialization");
@@ -72,16 +87,10 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     }
 
     @Override
-    public void close() throws Exception {
-        browser.close();
-        playwright.close();
-    }
-
-    @Override
     public void switchToLoginByPhone() {
+        logger.info("Try to switch authentication method to phone authentication.");
 
         String loginByPhoneButtonSelector = "div.input-wrapper > button, div.auth-form > button";
-        logger.info("Try to switch authentication method to phone authentication.");
         page.waitForSelector(loginByPhoneButtonSelector).click();
     }
 
@@ -100,59 +109,66 @@ public class TelegramWebAgentImpl implements TelegramWebAgent {
     }
 
     @Override
-    public void enterVerificationCode(String verificationCode) {
+    public void enterVerificationCode(String verificationCode, Optional<String> storageStateFilePath) {
 
-        String verificationCodeInputSelector = "div.input-field > input, div.auth-form > div.input-group > input";
+        logger.info("Enter verification code.");
 
-        // Wait for the code input field to appear (simulate verification step)
+        String verificationCodeInputSelector = "input.sign-in-code";
         ElementHandle verificationCodeElement = page.waitForSelector(verificationCodeInputSelector);
-            
-        // Simulate entering the verification code (replace with actual code)
         verificationCodeElement.fill(verificationCode);
 
-        // Wait for successful authentication (replace with appropriate selector)
-        //page.waitForSelector("#page-chats");
-        //browserCookieCache.save(context);
-
-        context.storageState(
-            new BrowserContext.StorageStateOptions()
-                .setPath(Paths.get("/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-bot-interactions/assets/state.json")));
+        storageStateFilePath.ifPresent(filePath -> {
+            Path path = Paths.get(filePath);
+            if (Files.exists(path)) {
+                StorageStateOptions options = new BrowserContext.StorageStateOptions().setPath(path);
+                context.storageState(options);
+            }
+        });
     }
 
     @Override
-    public List<String> readMessagesFromSpecificChat(String chatName, MessageFilter messageFilter) {
+    public List<ChatMessage> readMessagesFromSpecificChat(String chatName) {
 
-        // Find "@WhaleBot Pumps" bot
-        page.fill("#column-left > div > div > div.sidebar-header.can-have-forum > div.input-search > input", chatName);
+        String chatsSelector = "a.ListItem-button";
+        page.waitForSelector(chatsSelector);
 
-        // Open bot from list
-        page.click(
-                "#search-container > div.scrollable.scrollable-y > div > div > div.search-super-container-chats.tabs-tab.active > div > div.search-group.search-group-contacts.is-short > ul > a:nth-child(1)");
+        String userSearchInputSelector = "input#telegram-search-input";
+        ElementHandle userSearchInput = page.waitForSelector(userSearchInputSelector);
+        userSearchInput.fill(chatName);
 
-        // Wait for successful authentication (replace with appropriate selector)
-        page.waitForSelector(
-                "#column-center > div > div > div.sidebar-header.topbar.is-pinned-message-shown > div.chat-info-container > div.chat-info > div > div > div.top > div");
+        String foundUserDivSelector = "div.ListItem-button"; //TODO: Assume that we choose the first option
+        ElementHandle foundUserDiv = page.waitForSelector(foundUserDivSelector);
+        foundUserDiv.click();
 
-        List<String> output = new ArrayList<>();
+        return readMessagesFromOpenedChat();
+    }
+
+    @Override
+    public List<ChatMessage> readMessagesFromOpenedChat()
+    {
+        List<ChatMessage> output = new ArrayList<>();
+        page.waitForSelector("div.text-content");
         List<ElementHandle> messageElements = page
-                .querySelectorAll(".bubbles-inner .bubbles-date-group .bubbles-group > div > div > div > div.message");
+                .querySelectorAll("div.text-content");
 
         for (ElementHandle messageElement : messageElements) {
-            String messageText = messageElement.innerHTML();
+            String innerHtml = messageElement.innerHTML();
+            String innerText = messageElement.innerText();
 
-            if (!cache.containsMessage(messageText)) {
-                cache.saveMessage(messageText);
+            Optional<String> hash = cache.containsMessage(innerText);
 
-                if(messageFilter.filter(messageText)){
-                    output.add(messageText);
-                    logger.info("Added a new message");
-                    logger.info("--------------------");
-                    logger.info(messageText);
-                    logger.info("--------------------");
-                }
+            if (hash.isPresent()) {
+                String internalId = cache.saveMessage(innerText, hash.get());
+                output.add(new ChatMessage(internalId, innerText, innerHtml));
             }
         }
 
         return output;
+    }
+
+    @Override
+    public void close() throws Exception {
+        browser.close();
+        playwright.close();
     }
 }

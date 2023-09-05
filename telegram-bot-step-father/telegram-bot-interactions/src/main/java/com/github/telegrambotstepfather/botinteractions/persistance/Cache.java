@@ -1,6 +1,8 @@
 package com.github.telegrambotstepfather.botinteractions.persistance;
 
+import java.util.Optional;
+
 public interface Cache {
-    void saveMessage(String message);
-    boolean containsMessage(String message);
+    String saveMessage(String message, String hash);
+    Optional<String> containsMessage(String message);
 }
