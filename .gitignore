@@ -27,3 +27,7 @@ config.properties
 .DS_Store
 .AppleDouble
 .LSOverride
+.fake
+
+### Telegram API Library Files ###
+tdlib

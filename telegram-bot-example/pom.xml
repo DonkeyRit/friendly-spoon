@@ -22,12 +22,12 @@
         <dependency>
             <groupId>com.github.telegrambotstepfather</groupId>
             <artifactId>telegram-bot-step-father</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.telegrambotstepfather</groupId>
             <artifactId>telegram-bot-interactions</artifactId>
-            <version>0.0.27-SNAPSHOT</version>
+            <version>0.0.28-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

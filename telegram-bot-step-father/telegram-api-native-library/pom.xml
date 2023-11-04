@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.github.telegrambotstepfather</groupId>
+    <artifactId>telegram-bot-step-father-root</artifactId>
+    <version>0.0.28-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <groupId>com.github.telegrambotstepfather.nativelibrary</groupId>
+  <artifactId>telegram-api-native-library-root</artifactId>
+  <version>0.0.28-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>telegram-api-native-library-macos</module>
+    <module>telegram-api-native-library-windows</module>
+    <module>telegram-api-native-abstractions</module>
+  </modules>
+
+  <properties>
+    <assembly.descriptor.default.path>src/main/assembly/assembly.xml</assembly.descriptor.default.path>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>telegram-api-native-abstractions</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>telegram-api-native-library-macos</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>telegram-api-native-library-windows</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.6.0</version>
+          <configuration>
+            <descriptors>
+              <descriptor>${assembly.descriptor.default.path}</descriptor>
+            </descriptors>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
+  
