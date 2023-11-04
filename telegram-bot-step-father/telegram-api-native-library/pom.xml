@@ -18,7 +18,8 @@
   <modules>
     <module>telegram-api-native-library-macos</module>
     <module>telegram-api-native-library-windows</module>
-    <module>telegram-api-native-abstractions</module>
+    <module>telegram-api-native-library</module>
+    <module>telegram-api-native-bridge</module>
   </modules>
 
   <properties>
