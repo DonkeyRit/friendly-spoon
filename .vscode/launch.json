@@ -6,6 +6,14 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Example",
+            "request": "launch",
+            "mainClass": "com.github.telegrambotstepfather.nativelibrary.api.Example",
+            "projectName": "telegram-api-native-abstractions",
+            "vmArgs": "-Djava.library.path=/Users/dimaalekseev/Reps/friendly-spoon/telegram-bot-step-father/telegram-api-native-library/telegram-api-native-abstractions/target/libs"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "com.github.telegrambotstepfather.botinteractions.Main",

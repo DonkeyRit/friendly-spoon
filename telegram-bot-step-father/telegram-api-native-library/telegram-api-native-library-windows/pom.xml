@@ -11,7 +11,7 @@
     </parent>
     <artifactId>telegram-api-native-library-windows</artifactId>
     <packaging>jar</packaging>
-    <name>[Telegram API Native] Compiled telegram api library for windows</name>
+    <name>[Telegram API Native Library] Compiled telegram api library for windows</name>
 
     <properties>
         <project.platform>windows</project.platform>

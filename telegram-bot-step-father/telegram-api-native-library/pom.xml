@@ -19,7 +19,7 @@
     <module>telegram-api-native-library-macos</module>
     <module>telegram-api-native-library-windows</module>
     <module>telegram-api-native-library</module>
-    <module>telegram-api-native-bridge</module>
+    <module>telegram-api-native-library-bridge</module>
   </modules>
 
   <properties>
@@ -30,7 +30,12 @@
     <dependencies>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>telegram-api-native-abstractions</artifactId>
+        <artifactId>telegram-api-native-library-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>telegram-api-native-library-bridge</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

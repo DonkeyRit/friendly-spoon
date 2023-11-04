@@ -10,7 +10,7 @@
     <version>0.0.28-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>telegram-api-native-library</artifactId>
+  <artifactId>telegram-api-native-library-api</artifactId>
   <packaging>jar</packaging>
   <name>[Telegram API Native Library] JNI Bridge for Telegram Api Native Library</name>
 

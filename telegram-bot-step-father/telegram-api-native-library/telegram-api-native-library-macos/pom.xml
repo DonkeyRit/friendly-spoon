@@ -11,7 +11,7 @@
     </parent>
     <artifactId>telegram-api-native-library-macos</artifactId>
     <packaging>jar</packaging>
-    <name>[Telegram API Native] Compiled telegram api library for macos (Apple Chips)</name>
+    <name>[Telegram API Native Library] Compiled telegram api library for macos (Apple Chips)</name>
 
     <properties>
         <project.platform>macos</project.platform>
