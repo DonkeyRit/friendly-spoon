@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.telegrambotstepfather.nativelibrary</groupId>
+        <artifactId>telegram-api-native-library-root</artifactId>
+        <version>0.0.28-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>telegram-api-native-library-windows</artifactId>
+    <packaging>jar</packaging>
+    <name>[Telegram API Native] Compiled telegram api library for windows</name>
+
+    <properties>
+        <project.platform>windows</project.platform>
+    </properties>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}-${project.platform}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
