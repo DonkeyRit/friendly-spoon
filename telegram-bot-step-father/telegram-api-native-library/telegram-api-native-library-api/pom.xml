@@ -42,10 +42,10 @@
         <version>3.6.0</version>
         <executions>
           <execution>
-            <id>unpack-dependencies</id>
+            <id>unpack</id>
             <phase>generate-resources</phase>
             <goals>
-              <goal>unpack-dependencies</goal>
+              <goal>unpack</goal>
             </goals>
             <configuration>
               <artifactItems>

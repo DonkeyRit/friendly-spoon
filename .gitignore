@@ -11,6 +11,10 @@
 ### Maven ###
 target/
 
+### Intellij Idea ###
+.idea
+*.iml
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
