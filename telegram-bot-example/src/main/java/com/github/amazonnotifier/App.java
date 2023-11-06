@@ -2,7 +2,6 @@ package com.github.amazonnotifier;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -58,7 +57,7 @@ public class App {
                             .map(App::convertTelegramMessage)
                             .toList();
                     messages.forEach(m -> sendTelegramMessage(telegramBot, m));
-                    Thread.sleep(Duration.ofMinutes(1));
+                    
 
                     while (true) {
                         messages = telegramWebAgent
@@ -68,7 +67,6 @@ public class App {
                                 .map(App::convertTelegramMessage)
                                 .toList();
                         messages.forEach(m -> sendTelegramMessage(telegramBot, m));
-                        Thread.sleep(Duration.ofMinutes(1));
                     }
                 }
 
