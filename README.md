@@ -21,6 +21,8 @@ Provide step-by-step instructions on how to set up and start using the bot.
 ## Usage
 Provide examples or scenarios on how to use the bot effectively.
 
+![Global Insight News](https://github.com/DonkeyRit/friendly-spoon/assets/29143862/4b69c431-0293-499c-9ea3-0a0c847e1547)
+
 ## Contributing
 Encourage contributions by providing guidelines for submitting pull requests, reporting bugs, or suggesting features.
 
